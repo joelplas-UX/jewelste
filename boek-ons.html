@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boek ons! — jeWelste Coverband</title>
+  <meta name="description" content="Boek coverband jeWelste voor uw bruiloft, bedrijfsfeest, festival, tentfeest of andere gelegenheid.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .booking-section {
+      padding: 80px 0;
+      scroll-margin-top: calc(var(--nav-h) + 20px);
+    }
+    .booking-section:nth-child(even) { background: #f5f5f5; }
+    .booking-section:nth-child(odd)  { background: var(--white); }
+
+    .booking-hero-img {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.15);
+    }
+    .booking-hero-img img { width:100%;height:100%;object-fit:cover;max-height:400px; }
+
+    .feature-list { list-style: none; margin: 20px 0; }
+    .feature-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: .9rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .feature-list li::before { content: '✓'; color: var(--yellow); font-weight: 900; flex-shrink: 0; }
+
+    .section-tag {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--dark);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="36">
+    </a>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="over-ons.html">Over ons</a></li>
+      <li><a href="agenda.html">Agenda</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li class="nav-dropdown">
+        <a href="boek-ons.html">Boek ons!</a>
+        <ul class="dropdown-menu">
+          <li><a href="#bruiloft">Bruiloft</a></li>
+          <li><a href="#bedrijfsfeest">Bedrijfsfeest</a></li>
+          <li><a href="#festival">Festival</a></li>
+          <li><a href="#tentfeest">Tentfeest</a></li>
+          <li><a href="#overig">Overige gelegenheden</a></li>
+        </ul>
+      </li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <h1>Boek <span>jeWelste!</span></h1>
+  <p>Voor elk feest de juiste band. Vraag vrijblijvend een offerte aan.</p>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> › <span>Boek ons!</span>
+  </div>
+</header>
+
+<!-- INTRO QUOTE -->
+<div style="background:var(--yellow);padding:32px 24px;text-align:center;">
+  <div class="container" style="max-width:700px;">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;color:var(--dark);">
+      "Wat waren jullie geweldig in Katwijk, bij VV Katwijk vandaag! We hebben genoten van jullie energie, repertoire en uitstraling! Top!"
+    </p>
+    <cite style="font-size:.85rem;color:var(--dark);font-style:normal;">— Ingrid</cite>
+  </div>
+</div>
+
+<!-- BRUILOFT -->
+<div class="booking-section" id="bruiloft">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="section-tag">Bruiloft</span>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:16px;">Onvergetelijke feestavond</h2>
+        <p class="mb-md">Voor een onvergetelijke feestavond moeten jullie bij jeWelste zijn. Inmiddels hebben 174 bruidsparen met ons de openingsdans gedaan, en is 88% nog steeds bij elkaar en op weg naar hun koperen of zilveren jubileum.</p>
+        <p class="mb-md">Als coverband luisteren wij goed naar de wensen van het bruidspaar — het is immers jullie feest.</p>
+        <ul class="feature-list">
+          <li>Speciale verzoeknummers mogelijk</li>
+          <li>Openingsdans op maat</li>
+          <li>Pauze-acts en DJ mogelijk</li>
+          <li>Eigen geluids- en lichtinstallatie</li>
+          <li>Extra opties: beamers, sfeerverlichting, draadloze microfoons voor toespraken</li>
+        </ul>
+        <a href="contact.html?type=bruiloft" class="btn btn-primary mt-md">Vraag offerte aan</a>
+      </div>
+      <div class="booking-hero-img">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/wedding.jpg" alt="jeWelste op een bruiloft">
+      </div>
+    </div>
+    <div class="testimonial-grid" style="margin-top:40px;">
+      <div class="testimonial" style="background:#f9f9f9;border-left-color:var(--yellow);">
+        <p>"Afgelopen zaterdagavond hebben jullie bij een strandtent in IJmuiden (Zilt) een super gaaf optreden gegeven voor onze gasten tijdens onze bruiloft. Zoals ik eigenlijk wel verwacht had, ging het dak er weer helemaal af! Iedereen, jong &amp; oud zijn inmiddels fan van jullie."</p>
+        <cite style="color:var(--dark);">— Tino &amp; Kirsten</cite>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEDRIJFSFEEST -->
+<div class="booking-section" id="bedrijfsfeest">
+  <div class="container">
+    <div class="two-col reverse">
+      <div>
+        <span class="section-tag">Bedrijfsfeest</span>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:16px;">Uw personeel uit zijn dak</h2>
+        <p class="mb-md">Coverband jeWelste is uitermate geschikt voor uw bedrijfsfeest. Ons repertoire is afgestemd op alle generaties van jong tot oud en op onze nummers zal uw personeel zeker uit hun dak gaan.</p>
+        <p class="mb-md">Bedrijfskantine, feestzaal, hotel, congreshal of stadion, MKB-er of multinational — wie eenmaal op de dansvloer van jeWelste staat, gaat voor een avond vol plezier, dans en springen. <strong>#springgarantie</strong></p>
+        <ul class="feature-list">
+          <li>Repertoire, kleding en sets afgestemd op uw evenement</li>
+          <li>Nederlands-, Engels- en Duitstalig mogelijk</li>
+          <li>Factuurbasis — volledig aftrekbaar</li>
+          <li>Eigen techniek of inprikken op aanwezige installatie</li>
+          <li>Extra opties: beamers, sfeerverlichting, draadloze microfoons</li>
+        </ul>
+        <a href="contact.html?type=bedrijfsfeest" class="btn btn-primary mt-md">Vraag offerte aan</a>
+      </div>
+      <div class="booking-hero-img">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/03/12366474_1094868570536994_2845183411695615171_n.jpg" alt="jeWelste op een bedrijfsfeest">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FESTIVAL -->
+<div class="booking-section" id="festival">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="section-tag">Festival</span>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:16px;">Dé festivalband bij uitstek</h2>
+        <p class="mb-md">Coverband jeWelste is dé festivalband bij uitstek. Als starter, voorprogramma of hoofdact hebben wij onze sporen door heel Nederland verdiend.</p>
+        <ul class="feature-list">
+          <li>Voorprogramma Guus Meeuwis (5 stadionshows)</li>
+          <li>Noorderslag Groningen</li>
+          <li>SAIL Amsterdam</li>
+          <li>Vierdaagse Feesten Nijmegen</li>
+          <li>Festival ZAND, Strandwalfestival Rijswijk</li>
+          <li>Leiden Culinair, Zomerfestival Gorinchem</li>
+        </ul>
+        <a href="contact.html?type=festival" class="btn btn-primary mt-md">Vraag offerte aan</a>
+      </div>
+      <div class="booking-hero-img">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/20130823_005_dbrn_fotografie_zomer_festival_leerdam.jpg" alt="jeWelste op een festival">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TENTFEEST -->
+<div class="booking-section" id="tentfeest">
+  <div class="container">
+    <div class="two-col reverse">
+      <div>
+        <span class="section-tag">Tentfeest</span>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:16px;">Non-stop uit het dak</h2>
+        <p class="mb-md">Tentfeesten zijn op het lijf geschreven voor coverband jeWelste. Twee of drie dampende sets vol knalnummers en het publiek gaat non-stop uit zijn dak!</p>
+        <ul class="feature-list">
+          <li>Maïsfeest HAPS</li>
+          <li>Kaagweek</li>
+          <li>Dutch Snowtime Week</li>
+          <li>Meerpaaldagen</li>
+          <li>Berlicumse Feestweek</li>
+          <li>DIOS Lentefeest, Brandersfeesten Schiedam</li>
+        </ul>
+        <a href="contact.html?type=tentfeest" class="btn btn-primary mt-md">Vraag offerte aan</a>
+      </div>
+      <div class="booking-hero-img">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/P1070150-e1459173101251.jpg" alt="jeWelste op een tentfeest">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERIG -->
+<div class="booking-section" id="overig">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="section-tag">Overige gelegenheden</span>
+        <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:16px;">Van alle markten thuis</h2>
+        <p class="mb-md">Koningsdag, Leidens Ontzet, Bevrijdingsdag, premières, WK's, Oud &amp; Nieuw, kerstavond, carnaval, strandfeest, museumnacht, studentenfeest, zomerfeest, kroegavond — coverband jeWelste is van alle markten thuis!</p>
+        <ul class="feature-list">
+          <li>WK Hockey</li>
+          <li>Haagse Rugbydagen</li>
+          <li>Première We Will Rock You</li>
+          <li>Carnaval Hengevelde</li>
+          <li>TOP2000 Festival Arnhem</li>
+        </ul>
+        <a href="contact.html?type=overig" class="btn btn-primary mt-md">Vraag offerte aan</a>
+      </div>
+      <div class="booking-hero-img">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/5675303471_bc92232126_o.jpg" alt="jeWelste — overige gelegenheden">
+      </div>
+    </div>
+    <div class="testimonial-grid" style="margin-top:40px;">
+      <div class="testimonial" style="background:#f9f9f9;border-left-color:var(--yellow);">
+        <p>"Altijd een feestje als jullie er zijn! 3 oktober Leiden, Koningsdag Leiden, 5 mei Leiderdorp.. Bedankt voor de gezelligheid altijd."</p>
+        <cite style="color:var(--dark);">— Shirley</cite>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="32">
+        <p>Coverband jeWelste — 100% springgarantie.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/jewelste" class="social-link" title="Facebook" target="_blank" rel="noopener">f</a>
+          <a href="https://www.instagram.com/jewelste" class="social-link" title="Instagram" target="_blank" rel="noopener">ig</a>
+          <a href="https://www.youtube.com/user/officialjeWelste" class="social-link" title="YouTube" target="_blank" rel="noopener">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigatie</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="over-ons.html">Over ons</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="media.html">Media</a></li>
+          <li><a href="boek-ons.html">Boek ons!</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@jewelste.nl">info@jewelste.nl</a></li>
+          <li><a href="tel:+31621886450">+31 6 21 88 64 50</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 jeWelste. Alle rechten voorbehouden.</span>
+      <a href="privacy.html">Privacyverklaring</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

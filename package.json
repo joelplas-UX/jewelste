@@ -1,0 +1,9 @@
+{
+  "name": "jewelste",
+  "version": "1.0.0",
+  "description": "jeWelste coverband website — Netlify static rebuild",
+  "scripts": {
+    "dev": "npx serve . --listen 3000",
+    "start": "npx serve ."
+  }
+}

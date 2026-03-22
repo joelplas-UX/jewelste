@@ -1,0 +1,74 @@
+{
+  "events": [
+    {
+      "id": "2025-11-21",
+      "title": "Besloten optreden",
+      "date": "2025-11-21",
+      "startTime": "20:00",
+      "endTime": "24:00",
+      "location": "",
+      "address": "",
+      "type": "besloten"
+    },
+    {
+      "id": "2025-10-16",
+      "title": "Besloten optreden",
+      "date": "2025-10-16",
+      "startTime": "20:00",
+      "endTime": "01:00",
+      "location": "",
+      "address": "",
+      "type": "besloten"
+    },
+    {
+      "id": "2025-09-18",
+      "title": "Cafe Hogenboom — Kermis Roelofarendsveen",
+      "date": "2025-09-18",
+      "startTime": "21:00",
+      "endTime": "00:30",
+      "location": "Cafe Hogenboom",
+      "address": "Roelofarendsveen",
+      "type": "openbaar"
+    },
+    {
+      "id": "2025-09-06",
+      "title": "Zuidpop",
+      "date": "2025-09-06",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "location": "Zuidpop",
+      "address": "Pijnacker",
+      "type": "openbaar"
+    },
+    {
+      "id": "2025-05-24",
+      "title": "DownUnderBeach",
+      "date": "2025-05-24",
+      "startTime": "20:30",
+      "endTime": "01:00",
+      "location": "DownUnderBeach",
+      "address": "Scheveningen",
+      "type": "openbaar"
+    },
+    {
+      "id": "2025-04-25",
+      "title": "Grand Café de Burcht",
+      "date": "2025-04-25",
+      "startTime": "21:00",
+      "endTime": "23:30",
+      "location": "Grand Café de Burcht",
+      "address": "Leiden",
+      "type": "openbaar"
+    },
+    {
+      "id": "2025-03-29",
+      "title": "Muziekcentrum Zoeterwoude",
+      "date": "2025-03-29",
+      "startTime": "20:00",
+      "endTime": "23:30",
+      "location": "Muziekcentrum Zoeterwoude",
+      "address": "Schenkelweg 6, Zoeterwoude 2381 AN",
+      "type": "openbaar"
+    }
+  ]
+}

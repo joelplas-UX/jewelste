@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda — jeWelste Coverband</title>
+  <meta name="description" content="Bekijk wanneer en waar jeWelste optreedt. Openbare optredens en evenementen.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="36">
+    </a>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="over-ons.html">Over ons</a></li>
+      <li><a href="agenda.html">Agenda</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li class="nav-dropdown">
+        <a href="boek-ons.html">Boek ons!</a>
+        <ul class="dropdown-menu">
+          <li><a href="boek-ons.html#bruiloft">Bruiloft</a></li>
+          <li><a href="boek-ons.html#bedrijfsfeest">Bedrijfsfeest</a></li>
+          <li><a href="boek-ons.html#festival">Festival</a></li>
+          <li><a href="boek-ons.html#tentfeest">Tentfeest</a></li>
+          <li><a href="boek-ons.html#overig">Overige gelegenheden</a></li>
+        </ul>
+      </li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <h1>Agenda van <span>jeWelste</span></h1>
+  <p>Openbare optredens en evenementen. Besloten optredens worden niet op locatie vermeld.</p>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> › <span>Agenda</span>
+  </div>
+</header>
+
+<section class="section-light">
+  <div class="container" style="max-width:860px;">
+
+    <div class="agenda-tabs">
+      <button class="agenda-tab active" data-filter="upcoming">Aankomende optredens</button>
+      <button class="agenda-tab" data-filter="past">Eerdere optredens</button>
+      <button class="agenda-tab" data-filter="all">Alle optredens</button>
+    </div>
+
+    <div id="event-list" class="event-list">
+      <p class="event-empty">Agenda wordt geladen…</p>
+    </div>
+
+    <div style="margin-top:48px;padding:28px;background:#f5f5f5;border-radius:8px;text-align:center;">
+      <h3 style="font-size:1rem;margin-bottom:8px;">Wilt u jeWelste boeken?</h3>
+      <p style="font-size:.9rem;margin-bottom:16px;">Neem contact op voor beschikbaarheid en een vrijblijvende offerte.</p>
+      <a href="contact.html" class="btn btn-primary">Stuur een boekingsverzoek</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="32">
+        <p>Coverband jeWelste — 100% springgarantie.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/jewelste" class="social-link" title="Facebook" target="_blank" rel="noopener">f</a>
+          <a href="https://www.instagram.com/jewelste" class="social-link" title="Instagram" target="_blank" rel="noopener">ig</a>
+          <a href="https://www.youtube.com/user/officialjeWelste" class="social-link" title="YouTube" target="_blank" rel="noopener">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigatie</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="over-ons.html">Over ons</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="media.html">Media</a></li>
+          <li><a href="boek-ons.html">Boek ons!</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@jewelste.nl">info@jewelste.nl</a></li>
+          <li><a href="tel:+31621886450">+31 6 21 88 64 50</a></li>
+          <li style="color:rgba(255,255,255,.5);font-size:.875rem;">Manager: Ivar Pijper</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 jeWelste. Alle rechten voorbehouden.</span>
+      <a href="privacy.html">Privacyverklaring</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/agenda.js"></script>
+</body>
+</html>

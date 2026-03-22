@@ -1,0 +1,64 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Netlify Identity voor inloggen
+publish_mode: simple
+
+locale: nl
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "agenda"
+    label: "Agenda"
+    files:
+      - name: "events"
+        label: "Optredens"
+        file: "data/events.json"
+        fields:
+          - label: "Optredens"
+            name: "events"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - label: "Naam optreden"
+                name: "title"
+                widget: "string"
+                hint: "Bijv. 'Grand Café de Burcht' of 'Besloten optreden'"
+              - label: "Datum"
+                name: "date"
+                widget: "date"
+                format: "YYYY-MM-DD"
+              - label: "ID"
+                name: "id"
+                widget: "string"
+                hint: "Gebruik de datum als ID, bijv. 2026-04-15"
+              - label: "Begintijd"
+                name: "startTime"
+                widget: "string"
+                required: false
+                hint: "Bijv. 21:00"
+              - label: "Eindtijd"
+                name: "endTime"
+                widget: "string"
+                required: false
+                hint: "Bijv. 01:00"
+              - label: "Locatie"
+                name: "location"
+                widget: "string"
+                required: false
+                hint: "Naam van de zaal of het podium (leeg laten bij besloten)"
+              - label: "Adres / Stad"
+                name: "address"
+                widget: "string"
+                required: false
+                hint: "Bijv. Leiden of Schenkelweg 6, Zoeterwoude"
+              - label: "Type"
+                name: "type"
+                widget: "select"
+                options:
+                  - { label: "Openbaar", value: "openbaar" }
+                  - { label: "Besloten", value: "besloten" }
+                default: "openbaar"

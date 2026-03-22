@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — jeWelste Coverband</title>
+  <meta name="description" content="Neem contact op met coverband jeWelste voor boekingen, vragen of een vrijblijvende offerte.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .contact-info-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,232,0,.15);
+      border: 2px solid var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contact-info-text h4 {
+      font-size: .8rem;
+      color: var(--yellow);
+      margin-bottom: 4px;
+    }
+    .contact-info-text p, .contact-info-text a {
+      font-size: .9rem;
+      color: rgba(255,255,255,.8);
+    }
+    .contact-info-text a:hover { color: var(--yellow); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="36">
+    </a>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="over-ons.html">Over ons</a></li>
+      <li><a href="agenda.html">Agenda</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li class="nav-dropdown">
+        <a href="boek-ons.html">Boek ons!</a>
+        <ul class="dropdown-menu">
+          <li><a href="boek-ons.html#bruiloft">Bruiloft</a></li>
+          <li><a href="boek-ons.html#bedrijfsfeest">Bedrijfsfeest</a></li>
+          <li><a href="boek-ons.html#festival">Festival</a></li>
+          <li><a href="boek-ons.html#tentfeest">Tentfeest</a></li>
+          <li><a href="boek-ons.html#overig">Overige gelegenheden</a></li>
+        </ul>
+      </li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <h1><span>Contact</span></h1>
+  <p>Stuur ons een bericht of bel direct. We reageren zo snel mogelijk.</p>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> › <span>Contact</span>
+  </div>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Info -->
+      <div>
+        <h2 style="font-size:1.4rem;margin-bottom:28px;color:var(--yellow);">Neem contact op</h2>
+
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📧</div>
+          <div class="contact-info-text">
+            <h4>E-mail</h4>
+            <a href="mailto:info@jewelste.nl">info@jewelste.nl</a>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📞</div>
+          <div class="contact-info-text">
+            <h4>Telefoon</h4>
+            <a href="tel:+31621886450">+31 6 21 88 64 50</a>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-info-icon">👤</div>
+          <div class="contact-info-text">
+            <h4>Manager / Boekingen</h4>
+            <p>Ivar Pijper</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📍</div>
+          <div class="contact-info-text">
+            <h4>Adres</h4>
+            <p>Zoetermeer, Nederland</p>
+          </div>
+        </div>
+
+        <div style="margin-top:36px;">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);margin-bottom:14px;">Volg ons</h4>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/jewelste" class="social-link" title="Facebook" target="_blank" rel="noopener">f</a>
+            <a href="https://www.instagram.com/jewelste" class="social-link" title="Instagram" target="_blank" rel="noopener">ig</a>
+            <a href="https://www.youtube.com/user/officialjeWelste" class="social-link" title="YouTube" target="_blank" rel="noopener">▶</a>
+            <a href="https://twitter.com/jewelste" class="social-link" title="X/Twitter" target="_blank" rel="noopener">𝕏</a>
+            <a href="https://vimeo.com/jewelste" class="social-link" title="Vimeo" target="_blank" rel="noopener">v</a>
+            <a href="https://soundcloud.com/jewelste" class="social-link" title="SoundCloud" target="_blank" rel="noopener">sc</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form (Netlify Forms) -->
+      <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:36px;border:1px solid rgba(255,255,255,.1);">
+        <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--white);">Stuur een bericht</h3>
+        <p class="form-note">Vul het formulier in en wij nemen zo snel mogelijk contact met u op.</p>
+
+        <form name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              action="/contact.html?form-success=true">
+
+          <!-- Honeypot -->
+          <p style="display:none;">
+            <label>Niet invullen: <input name="bot-field"></label>
+          </p>
+          <input type="hidden" name="form-name" value="contact">
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="naam">Naam *</label>
+              <input type="text" id="naam" name="naam" required placeholder="Uw naam">
+            </div>
+            <div class="form-group">
+              <label for="email">E-mailadres *</label>
+              <input type="email" id="email" name="email" required placeholder="uw@email.nl">
+            </div>
+            <div class="form-group">
+              <label for="telefoon">Telefoon</label>
+              <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 ...">
+            </div>
+            <div class="form-group">
+              <label for="type">Type gelegenheid</label>
+              <select id="type" name="type">
+                <option value="">— Maak een keuze —</option>
+                <option value="bruiloft">Bruiloft</option>
+                <option value="bedrijfsfeest">Bedrijfsfeest</option>
+                <option value="festival">Festival</option>
+                <option value="tentfeest">Tentfeest</option>
+                <option value="overig">Overige gelegenheid</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="datum">Gewenste datum</label>
+              <input type="date" id="datum" name="datum">
+            </div>
+            <div class="form-group">
+              <label for="locatie">Locatie / Plaats</label>
+              <input type="text" id="locatie" name="locatie" placeholder="Bijv. Rotterdam">
+            </div>
+            <div class="form-group form-full">
+              <label for="bericht">Bericht *</label>
+              <textarea id="bericht" name="bericht" required placeholder="Vertel ons meer over uw feest of stel uw vraag..."></textarea>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">Verstuur bericht</button>
+            <p style="font-size:.75rem;color:rgba(255,255,255,.4);margin:0;">* Verplicht veld</p>
+          </div>
+        </form>
+
+        <div id="form-success-msg" class="form-success">
+          ✅ Uw bericht is verzonden! We nemen zo snel mogelijk contact met u op.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://www.jewelste.nl/wp-content/uploads/2016/01/jeWelste_logo_824x200.png" alt="jeWelste" height="32">
+        <p>Coverband jeWelste — 100% springgarantie.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/jewelste" class="social-link" title="Facebook" target="_blank" rel="noopener">f</a>
+          <a href="https://www.instagram.com/jewelste" class="social-link" title="Instagram" target="_blank" rel="noopener">ig</a>
+          <a href="https://www.youtube.com/user/officialjeWelste" class="social-link" title="YouTube" target="_blank" rel="noopener">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigatie</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="over-ons.html">Over ons</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="media.html">Media</a></li>
+          <li><a href="boek-ons.html">Boek ons!</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@jewelste.nl">info@jewelste.nl</a></li>
+          <li><a href="tel:+31621886450">+31 6 21 88 64 50</a></li>
+          <li style="color:rgba(255,255,255,.5);font-size:.875rem;">Manager: Ivar Pijper</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 jeWelste. Alle rechten voorbehouden.</span>
+      <a href="privacy.html">Privacyverklaring</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
