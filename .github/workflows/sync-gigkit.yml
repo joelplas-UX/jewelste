@@ -1,0 +1,35 @@
+name: Sync Gigkit Events
+
+on:
+  schedule:
+    # Elke dag om 06:00 UTC (07:00 CET)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Ook handmatig triggerbaar
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Run Gigkit sync
+        run: php admin/sync-gigkit.php
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "sync@jewelste.nl"
+          git config --local user.name "jeWelste Sync Bot"
+          git add data/events.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: sync Gigkit events"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
