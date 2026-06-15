@@ -62,14 +62,18 @@ function parse_ical($ical_content) {
  * Converteer iCal naar jeWelste format
  */
 function convert_event($ical_event) {
-    // Zet webcal:// naar https:// voor fetch
     $start = $ical_event['DTSTART'] ?? '';
     $summary = $ical_event['SUMMARY'] ?? 'Event';
     $location = $ical_event['LOCATION'] ?? '';
     $description = $ical_event['DESCRIPTION'] ?? '';
 
     // Parse datum/tijd
-    // iCal format: 20260415T200000 of 20260415
+    // iCal format: 20260415T200000 of 20260415 of met TZID: 20231125T211500 (na colon)
+    // Zet alles na colon als datum start
+    if (strpos($start, ':') !== false) {
+        $start = substr($start, strpos($start, ':') + 1);
+    }
+
     if (preg_match('/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/', $start, $m)) {
         $date = $m[1] . '-' . $m[2] . '-' . $m[3];
         $time = isset($m[4]) ? $m[4] . ':' . $m[5] : '';
