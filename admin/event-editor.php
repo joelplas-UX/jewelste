@@ -38,8 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'endTime' => $_POST['endTime'] ?? '',
         'location' => $_POST['location'] ?? '',
         'address' => $_POST['address'] ?? '',
-        'type' => $_POST['type'] ?? 'openbaar'
+        'type' => $_POST['type'] ?? 'openbaar',
+        'edited' => !$is_new  // Mark as edited if updating existing event
     ];
+
+    // Behoud UID bij update van Gigkit event
+    if (!$is_new && isset($event['uid'])) {
+        $new_event['uid'] = $event['uid'];
+    }
 
     // Events laden
     $events = [];

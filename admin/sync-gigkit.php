@@ -97,13 +97,15 @@ function convert_event($e) {
 
     return [
         'id' => $date,
+        'uid' => $e['UID'] ?? null,
         'title' => $e['SUMMARY'] ?? 'Event',
         'date' => $date,
         'startTime' => isset($m[4]) ? $m[4] . ':' . $m[5] : '',
         'endTime' => '',
         'location' => $e['LOCATION'] ?? '',
         'address' => '',
-        'type' => 'openbaar'
+        'type' => 'openbaar',
+        'edited' => false
     ];
 }
 
@@ -122,23 +124,56 @@ try {
     $ical_events = parse_ical($ical);
     echo "   Found: " . count($ical_events) . " total\n";
 
-    $events = [];
+    $gigkit_events = [];
     foreach ($ical_events as $e) {
         $event = convert_event($e);
-        if ($event) $events[] = $event;
+        if ($event) $gigkit_events[] = $event;
     }
 
-    usort($events, fn($a, $b) => strtotime($b['date']) - strtotime($a['date']));
+    echo "   Filtered: " . count($gigkit_events) . " (no TENTATIVE + future only)\n";
 
-    echo "   Filtered: " . count($events) . " (no TENTATIVE + future only)\n";
+    // Load existing events to preserve edited flags
+    $existing_events = [];
+    if (file_exists($EVENTS_FILE)) {
+        $existing_data = json_decode(file_get_contents($EVENTS_FILE), true);
+        if ($existing_data && isset($existing_data['events'])) {
+            foreach ($existing_data['events'] as $e) {
+                $existing_events[$e['uid'] ?? $e['id']] = $e;
+            }
+        }
+    }
+
+    // Merge: respect edited flag from existing events
+    $merged_events = [];
+    foreach ($gigkit_events as $event) {
+        $key = $event['uid'] ?? $event['id'];
+        if (isset($existing_events[$key]) && ($existing_events[$key]['edited'] ?? false)) {
+            // Keep existing edited event
+            echo "   ↷ Keeping edited: " . $event['title'] . "\n";
+            $merged_events[] = $existing_events[$key];
+        } else {
+            // Use Gigkit version
+            $merged_events[] = $event;
+        }
+    }
+
+    // Add manually created events (no UID) that aren't in Gigkit
+    foreach ($existing_events as $key => $event) {
+        if (!$event['uid'] && !in_array($event, $merged_events, true)) {
+            $merged_events[] = $event;
+        }
+    }
+
+    usort($merged_events, fn($a, $b) => strtotime($b['date']) - strtotime($a['date']));
+
     echo "💾 Writing to: $EVENTS_FILE\n";
 
-    $json = json_encode(['events' => $events], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $json = json_encode(['events' => $merged_events], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     if (!file_put_contents($EVENTS_FILE, $json)) {
         throw new Exception("Write failed to $EVENTS_FILE");
     }
 
-    echo "✅ Sync complete! " . count($events) . " events saved\n";
+    echo "✅ Sync complete! " . count($merged_events) . " events total (" . count($gigkit_events) . " from Gigkit)\n";
     exit(0);
 
 } catch (Exception $e) {
