@@ -35,7 +35,14 @@ if (!$EVENTS_FILE) {
  * Unescape iCal text (handle \n, \,, etc)
  */
 function unescape_ical($text) {
-    return str_replace(['\\n', '\\,', '\\;', '\\\\'], ["\n", ',', ';', '\\'], $text);
+    // In iCal format: \\ → backslash, \n → newline, \, → comma, \; → semicolon
+    // Process in order to avoid double-unescaping
+    $text = str_replace('\\\\', "\x00", $text);      // Temp placeholder for \\
+    $text = str_replace('\n', "\n", $text);          // \n → newline
+    $text = str_replace('\,', ',', $text);           // \, → comma
+    $text = str_replace('\;', ';', $text);           // \; → semicolon
+    $text = str_replace("\x00", '\\', $text);        // Restore backslash
+    return $text;
 }
 
 /**
