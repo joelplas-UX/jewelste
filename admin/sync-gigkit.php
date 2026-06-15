@@ -75,9 +75,8 @@ function parse_ical($content) {
  * Convert to jeWelste format
  */
 function convert_event($e) {
-    // Filter: CONFIRMED (skip TENTATIVE), PUBLIC, future only
+    // Filter: CONFIRMED only (skip TENTATIVE), future dates only
     if (($e['STATUS'] ?? 'CONFIRMED') === 'TENTATIVE') return null;
-    if (($e['CLASS'] ?? 'PUBLIC') !== 'PUBLIC') return null;
 
     $start = $e['DTSTART'] ?? '';
     if (strpos($start, ':') !== false) {
@@ -105,6 +104,7 @@ function convert_event($e) {
         'location' => $e['LOCATION'] ?? '',
         'address' => '',
         'type' => 'openbaar',
+        'class' => $e['CLASS'] ?? 'PUBLIC',
         'published' => false
     ];
 }
@@ -130,7 +130,7 @@ try {
         if ($event) $gigkit_events[] = $event;
     }
 
-    echo "   Filtered: " . count($gigkit_events) . " (no TENTATIVE + future only)\n";
+    echo "   Filtered: " . count($gigkit_events) . " (no TENTATIVE + future only, incl. PRIVATE)\n";
 
     // Load existing events to preserve publishing status
     $existing_events = [];

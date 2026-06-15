@@ -36,9 +36,13 @@ function renderEvents(events, container) {
       ? '<span class="event-badge badge-openbaar">Openbaar</span>'
       : '<span class="event-badge badge-besloten">Besloten</span>';
 
-    const location = ev.location
-      ? `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`
-      : '';
+    // Voor private events (CLASS:PRIVATE): toon "Besloten optreden" zonder locatie
+    let location = '';
+    if (ev.class === 'PRIVATE') {
+      location = '<span>🔒 Besloten optreden</span>';
+    } else if (ev.location) {
+      location = `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`;
+    }
 
     const time = ev.startTime
       ? `<span>🕐 ${ev.startTime}${ev.endTime ? ' – ' + ev.endTime : ''}</span>`

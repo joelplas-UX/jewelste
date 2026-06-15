@@ -170,6 +170,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: #fff3e0;
             color: #e65100;
         }
+        .badge-private {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
         .event-card.unpublished {
             opacity: 0.7;
             border-left: 4px solid #ff9800;
@@ -276,6 +280,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <span class="event-badge badge-<?php echo ($event['published'] ?? false) ? 'published' : 'concept'; ?>">
                                     <?php echo ($event['published'] ?? false) ? '✅ Live' : '⏸ Concept'; ?>
                                 </span>
+                                <?php if (($event['class'] ?? 'PUBLIC') === 'PRIVATE'): ?>
+                                    <span class="event-badge badge-private">🔒 Prive</span>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="event-actions">
