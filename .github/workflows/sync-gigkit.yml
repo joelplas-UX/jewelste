@@ -21,14 +21,13 @@ jobs:
       - name: Run Gigkit sync
         run: php admin/sync-gigkit.php
 
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "bot@jewelste.nl"
-          git config --local user.name "jeWelste Bot"
-          git add data/events.json
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: sync Gigkit events [skip ci]"
-            git push origin main
-          fi
+      - name: Deploy to Vimexx via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./data/
+          server-dir: ${{ secrets.FTP_PATH }}/data/
+          state-name: .ftp-deploy-sync-state.json
+          dangerous-clean-slate: false
