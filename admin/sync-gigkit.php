@@ -139,23 +139,28 @@ function fetch_ical($url) {
  */
 try {
     // Fetch iCal
-    echo "📡 Gigkit feed laden...\n";
+    echo "📡 Gigkit feed laden van: $GIGKIT_FEED\n";
     $ical = fetch_ical($GIGKIT_FEED);
+    echo "✅ Feed geladen (" . strlen($ical) . " bytes)\n";
 
     // Parse
     echo "📝 Events parsen...\n";
     $ical_events = parse_ical($ical);
-    echo "   Gevonden: " . count($ical_events) . " events\n";
+    echo "   Total gevonden: " . count($ical_events) . " events\n";
 
-    // Convert
+    // Convert (filter on CONFIRMED + PUBLIC)
     $events = [];
+    $skipped = 0;
     foreach ($ical_events as $ical_event) {
         $event = convert_event($ical_event);
         if ($event) {
             $events[] = $event;
+        } else {
+            $skipped++;
         }
     }
-    echo "   Converted: " . count($events) . " events\n";
+    echo "   Confirmed + Public: " . count($events) . " events\n";
+    echo "   Skipped: $skipped events\n";
 
     // Sort op datum (nieuwste eerst)
     usort($events, function($a, $b) {
@@ -180,7 +185,9 @@ try {
     exit(0);
 
 } catch (Exception $e) {
-    echo "❌ Fout: " . $e->getMessage() . "\n";
+    echo "❌ FOUT: " . $e->getMessage() . "\n";
+    echo "❌ File: " . $e->getFile() . ":" . $e->getLine() . "\n";
+    echo "❌ Trace: " . $e->getTraceAsString() . "\n";
     exit(1);
 }
 ?>
