@@ -4,9 +4,20 @@
  * Laadt events van Gigkit iCal feed en synchroniseert naar events.json
  */
 
-// Gigkit iCal URL
-$GIGKIT_FEED = 'webcal://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc3c77';
-$EVENTS_FILE = '../data/events.json';
+// Set error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+// Gigkit iCal URL (zet webcal:// om naar https://)
+$GIGKIT_URL = 'webcal://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc3c77';
+$GIGKIT_FEED = str_replace('webcal://', 'https://', $GIGKIT_URL);
+$EVENTS_FILE = __DIR__ . '/../data/events.json';
+
+// Controleer of events.json pad exists
+if (!is_dir(dirname($EVENTS_FILE))) {
+    echo "❌ Error: Directory " . dirname($EVENTS_FILE) . " does not exist\n";
+    exit(1);
+}
 
 /**
  * Parse iCal format
@@ -82,19 +93,26 @@ function convert_event($ical_event) {
  * Fetch iCal feed
  */
 function fetch_ical($url) {
-    // Zet webcal:// om naar https://
-    $url = str_replace('webcal://', 'https://', $url);
-
     $context = stream_context_create([
         'http' => [
             'timeout' => 10,
-            'user_agent' => 'jeWelste-Sync/1.0'
+            'user_agent' => 'jeWelste-Sync/1.0',
+            'ignore_errors' => true
+        ],
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false
         ]
     ]);
 
     $content = @file_get_contents($url, false, $context);
-    if ($content === false) {
-        throw new Exception("Kon Gigkit feed niet laden: $url");
+    if ($content === false || empty($content)) {
+        throw new Exception("Kon Gigkit feed niet laden: $url (response was empty or failed)");
+    }
+
+    // Check of het iCal format is
+    if (strpos($content, 'BEGIN:VCALENDAR') === false) {
+        throw new Exception("Response is geen valid iCal feed");
     }
 
     return $content;
@@ -133,11 +151,16 @@ try {
     $data = ['events' => $events];
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-    if (!file_put_contents($EVENTS_FILE, $json)) {
-        throw new Exception("Kon " . $EVENTS_FILE . " niet schrijven");
+    if ($json === false) {
+        throw new Exception("Kon events niet naar JSON encoderen: " . json_last_error_msg());
     }
 
-    echo "✅ Sync compleet! " . count($events) . " events opgeslagen.\n";
+    $bytes_written = @file_put_contents($EVENTS_FILE, $json);
+    if ($bytes_written === false) {
+        throw new Exception("Kon " . $EVENTS_FILE . " niet schrijven (check permissions)");
+    }
+
+    echo "✅ Sync compleet! " . count($events) . " events opgeslagen (" . $bytes_written . " bytes).\n";
     exit(0);
 
 } catch (Exception $e) {
