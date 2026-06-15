@@ -32,6 +32,13 @@ if (!$EVENTS_FILE) {
 }
 
 /**
+ * Unescape iCal text (handle \n, \,, etc)
+ */
+function unescape_ical($text) {
+    return str_replace(['\\n', '\\,', '\\;', '\\\\'], ["\n", ',', ';', '\\'], $text);
+}
+
+/**
  * Parse iCal
  */
 function parse_ical($content) {
@@ -51,7 +58,7 @@ function parse_ical($content) {
         } elseif ($in_event && strpos($line, ':') !== false) {
             [$key, $value] = explode(':', $line, 2);
             $key = explode(';', $key)[0];
-            $event[$key] = $value;
+            $event[$key] = unescape_ical($value);
         }
     }
     return $events;
