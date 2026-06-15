@@ -99,6 +99,13 @@ function convert_event($ical_event) {
         return null; // Kan datum niet parsen
     }
 
+    // Filter: alleen events in de toekomst
+    $event_date = strtotime($date);
+    $today = strtotime(date('Y-m-d'));
+    if ($event_date < $today) {
+        return null; // Skip events in het verleden
+    }
+
     return [
         'id' => $date,
         'title' => $summary,
@@ -107,7 +114,7 @@ function convert_event($ical_event) {
         'endTime' => '', // iCal DTEND zou hier kunnen, maar vereenvoudigd voor nu
         'location' => $location,
         'address' => '',
-        'type' => 'openbaar' // Gigkit biedt dit niet, dus alles is openbaar
+        'type' => 'openbaar' // Gigkit events zijn openbaar
     ];
 }
 
