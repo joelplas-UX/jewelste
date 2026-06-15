@@ -166,7 +166,7 @@ try {
 
     // Add manually created events (no UID) that aren't in Gigkit
     foreach ($existing_events as $key => $event) {
-        if (!$event['uid'] && !in_array($event, $merged_events, true)) {
+        if (!($event['uid'] ?? null) && !in_array($event, $merged_events, true)) {
             $merged_events[] = $event;
         }
     }
