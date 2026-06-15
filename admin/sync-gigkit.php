@@ -143,30 +143,61 @@ try {
         }
     }
 
-    // Merge: respect published status (don't overwrite published events)
+    // Merge: match by UID first, then by date+title, respect published status
     $merged_events = [];
     $updated_count = 0;
     $published_count = 0;
+    $merged_keys = [];
 
     foreach ($gigkit_events as $event) {
-        $key = $event['uid'] ?? $event['id'];
-        if (isset($existing_events[$key]) && ($existing_events[$key]['published'] ?? false)) {
+        $existing = null;
+        $existing_key = null;
+
+        // Try to match by UID first
+        if ($event['uid']) {
+            foreach ($existing_events as $key => $e) {
+                if (($e['uid'] ?? null) === $event['uid']) {
+                    $existing = $e;
+                    $existing_key = $key;
+                    break;
+                }
+            }
+        }
+
+        // If no UID match, try to match by date + title
+        if (!$existing) {
+            foreach ($existing_events as $key => $e) {
+                if ($e['date'] === $event['date'] && $e['title'] === $event['title']) {
+                    $existing = $e;
+                    $existing_key = $key;
+                    break;
+                }
+            }
+        }
+
+        // Update or add event
+        if ($existing && ($existing['published'] ?? false)) {
             // Keep published event, don't update from Gigkit
             echo "   📌 Keeping published: " . $event['title'] . "\n";
-            $merged_events[] = $existing_events[$key];
+            $merged_events[] = $existing;
             $published_count++;
         } else {
             // Update with Gigkit version (new or unpublished)
-            if (isset($existing_events[$key])) {
+            if ($existing) {
                 $updated_count++;
+                echo "   🔄 Updating: " . $event['title'] . "\n";
             }
             $merged_events[] = $event;
         }
+
+        if ($existing_key) {
+            $merged_keys[] = $existing_key;
+        }
     }
 
-    // Add manually created events (no UID) that aren't in Gigkit
+    // Add manually created events that weren't matched with Gigkit
     foreach ($existing_events as $key => $event) {
-        if (!($event['uid'] ?? null) && !in_array($event, $merged_events, true)) {
+        if (!in_array($key, $merged_keys, true)) {
             $merged_events[] = $event;
         }
     }
