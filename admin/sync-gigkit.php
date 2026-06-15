@@ -11,7 +11,13 @@ ini_set('display_errors', '1');
 // Gigkit iCal URL (zet webcal:// om naar https://)
 $GIGKIT_URL = 'webcal://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc3c77';
 $GIGKIT_FEED = str_replace('webcal://', 'https://', $GIGKIT_URL);
-$EVENTS_FILE = __DIR__ . '/../data/events.json';
+
+// Bepaal het juiste pad (werkt in local en GitHub Actions)
+$BASE_DIR = dirname(dirname(__DIR__)); // Go up from admin/ to root
+$EVENTS_FILE = $BASE_DIR . '/data/events.json';
+
+echo "📂 Base dir: $BASE_DIR\n";
+echo "📂 Events file: $EVENTS_FILE\n";
 
 // Controleer of events.json pad exists
 if (!is_dir(dirname($EVENTS_FILE))) {
