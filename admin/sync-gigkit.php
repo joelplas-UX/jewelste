@@ -19,10 +19,14 @@ $EVENTS_FILE = $BASE_DIR . '/data/events.json';
 echo "📂 Base dir: $BASE_DIR\n";
 echo "📂 Events file: $EVENTS_FILE\n";
 
-// Controleer of events.json pad exists
-if (!is_dir(dirname($EVENTS_FILE))) {
-    echo "❌ Error: Directory " . dirname($EVENTS_FILE) . " does not exist\n";
-    exit(1);
+// Maak data directory aan als deze niet bestaat
+$data_dir = dirname($EVENTS_FILE);
+if (!is_dir($data_dir)) {
+    echo "📂 Creating directory: $data_dir\n";
+    if (!@mkdir($data_dir, 0755, true)) {
+        echo "❌ Error: Could not create directory $data_dir\n";
+        exit(1);
+    }
 }
 
 /**
