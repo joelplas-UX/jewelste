@@ -61,8 +61,8 @@ function parse_ical($content) {
  * Convert to jeWelste format
  */
 function convert_event($e) {
-    // Filter: CONFIRMED, PUBLIC, future only
-    if (($e['STATUS'] ?? 'CONFIRMED') !== 'CONFIRMED') return null;
+    // Filter: CONFIRMED (skip TENTATIVE), PUBLIC, future only
+    if (($e['STATUS'] ?? 'CONFIRMED') === 'TENTATIVE') return null;
     if (($e['CLASS'] ?? 'PUBLIC') !== 'PUBLIC') return null;
 
     $start = $e['DTSTART'] ?? '';
@@ -116,7 +116,7 @@ try {
 
     usort($events, fn($a, $b) => strtotime($b['date']) - strtotime($a['date']));
 
-    echo "   Filtered: " . count($events) . " (CONFIRMED + PUBLIC + future)\n";
+    echo "   Filtered: " . count($events) . " (no TENTATIVE + future only)\n";
     echo "💾 Writing to: $EVENTS_FILE\n";
 
     $json = json_encode(['events' => $events], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
