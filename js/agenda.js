@@ -75,8 +75,8 @@ async function initAgenda() {
     const data = await res.json();
     // Ondersteunt zowel {events:[...]} (Decap CMS) als directe array (legacy)
     allEvents = Array.isArray(data) ? data : (data.events || []);
-    // Sort descending by date
-    allEvents.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Sort ascending by date (oldest first)
+    allEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
   } catch (e) {
     container.innerHTML = '<p class="event-empty">Kon de agenda niet laden. Probeer het later opnieuw.</p>';
     return;

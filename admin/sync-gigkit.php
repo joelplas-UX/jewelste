@@ -171,7 +171,7 @@ try {
         }
     }
 
-    usort($merged_events, fn($a, $b) => strtotime($b['date']) - strtotime($a['date']));
+    usort($merged_events, fn($a, $b) => strtotime($a['date']) - strtotime($b['date']));
 
     echo "💾 Writing to: $EVENTS_FILE\n";
 

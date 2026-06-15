@@ -18,9 +18,9 @@ if (file_exists($events_file)) {
     $events = $data['events'] ?? [];
 }
 
-// Sorteren op datum (nieuwste eerst)
+// Sorteren op datum (oplopend)
 usort($events, function($a, $b) {
-    return strtotime($b['date']) - strtotime($a['date']);
+    return strtotime($a['date']) - strtotime($b['date']);
 });
 
 // Handle POST requests
