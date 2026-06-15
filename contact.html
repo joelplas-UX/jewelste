@@ -143,17 +143,10 @@
         <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--white);">Stuur een bericht</h3>
         <p class="form-note">Vul het formulier in en wij nemen zo snel mogelijk contact met u op.</p>
 
-        <form name="contact"
+        <form id="contact-form"
+              name="contact"
               method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              action="/contact?form-success=true">
-
-          <!-- Honeypot -->
-          <p style="display:none;">
-            <label>Niet invullen: <input name="bot-field"></label>
-          </p>
-          <input type="hidden" name="form-name" value="contact">
+              action="/contact-handler.php">
 
           <div class="form-grid">
             <div class="form-group">
@@ -199,8 +192,11 @@
           </div>
         </form>
 
-        <div id="form-success-msg" class="form-success">
+        <div id="form-success-msg" class="form-success" style="display:none;">
           ✅ Uw bericht is verzonden! We nemen zo snel mogelijk contact met u op.
+        </div>
+        <div id="form-error-msg" style="display:none;color:#ff6b6b;margin-top:16px;padding:12px;background:rgba(255,107,107,.1);border-radius:6px;">
+          ❌ <span id="error-text"></span>
         </div>
       </div>
 
@@ -249,5 +245,54 @@
 </footer>
 
 <script src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('contact-form');
+  const successMsg = document.getElementById('form-success-msg');
+  const errorMsg = document.getElementById('form-error-msg');
+  const errorText = document.getElementById('error-text');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn.textContent;
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Reset messages
+    successMsg.style.display = 'none';
+    errorMsg.style.display = 'none';
+
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Verzenden...';
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/contact-handler.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        successMsg.style.display = 'block';
+        form.reset();
+      } else {
+        errorMsg.style.display = 'block';
+        errorText.textContent = result.error || 'Er is een fout opgetreden';
+      }
+    } catch (error) {
+      errorMsg.style.display = 'block';
+      errorText.textContent = 'Netwerkfout. Probeer het later opnieuw.';
+      console.error('Form error:', error);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
+  });
+});
+</script>
+
 </body>
 </html>
