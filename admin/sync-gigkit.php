@@ -13,20 +13,30 @@ $GIGKIT_URL = 'webcal://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc
 $GIGKIT_FEED = str_replace('webcal://', 'https://', $GIGKIT_URL);
 
 // Bepaal het juiste pad (werkt in local en GitHub Actions)
-$BASE_DIR = dirname(dirname(__DIR__)); // Go up from admin/ to root
-$EVENTS_FILE = $BASE_DIR . '/data/events.json';
+// __DIR__ = /path/to/jewelste/admin
+// dirname(__DIR__) = /path/to/jewelste
+$JEWELSTE_DIR = dirname(__DIR__); // Go up from admin/ to jewelste root
+$EVENTS_FILE = $JEWELSTE_DIR . '/data/events.json';
 
-echo "📂 Base dir: $BASE_DIR\n";
+echo "📂 Script dir (__DIR__): " . __DIR__ . "\n";
+echo "📂 Jewelste root dir: $JEWELSTE_DIR\n";
 echo "📂 Events file: $EVENTS_FILE\n";
 
 // Maak data directory aan als deze niet bestaat
 $data_dir = dirname($EVENTS_FILE);
 if (!is_dir($data_dir)) {
     echo "📂 Creating directory: $data_dir\n";
-    if (!@mkdir($data_dir, 0755, true)) {
-        echo "❌ Error: Could not create directory $data_dir\n";
+    $mkdir_result = mkdir($data_dir, 0755, true);
+    if (!$mkdir_result) {
+        $last_error = error_get_last();
+        echo "❌ Error: mkdir failed\n";
+        echo "❌ PHP Error: " . ($last_error ? $last_error['message'] : 'unknown') . "\n";
+        echo "❌ Check: is_writable parent? " . (is_writable(dirname($data_dir)) ? 'yes' : 'no') . "\n";
         exit(1);
     }
+    echo "✅ Directory created successfully\n";
+} else {
+    echo "✅ Directory already exists\n";
 }
 
 /**
