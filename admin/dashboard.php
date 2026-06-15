@@ -23,20 +23,33 @@ usort($events, function($a, $b) {
     return strtotime($b['date']) - strtotime($a['date']);
 });
 
-// API aanroepen voor verwijderen
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
-    $event_id = $_POST['event_id'];
-    $events = array_filter($events, function($e) use ($event_id) {
-        return $e['id'] !== $event_id;
-    });
+// Handle POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? null;
+    $event_id = $_POST['event_id'] ?? null;
 
-    // Opslaan
-    $data = ['events' => array_values($events)];
-    file_put_contents($events_file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    if ($action === 'delete') {
+        $events = array_filter($events, function($e) use ($event_id) {
+            return $e['id'] !== $event_id;
+        });
+        $data = ['events' => array_values($events)];
+        file_put_contents($events_file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        header('Location: /admin/dashboard.php');
+        exit;
+    }
 
-    // Teruggaan naar dashboard
-    header('Location: /admin/dashboard.php');
-    exit;
+    if ($action === 'toggle-publish') {
+        foreach ($events as &$e) {
+            if ($e['id'] === $event_id) {
+                $e['published'] = !($e['published'] ?? false);
+                break;
+            }
+        }
+        $data = ['events' => $events];
+        file_put_contents($events_file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        header('Location: /admin/dashboard.php');
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -165,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             display: flex;
             gap: 8px;
         }
-        .btn-edit, .btn-delete {
+        .btn-edit, .btn-delete, .btn-publish, .btn-unpublish {
             padding: 8px 16px;
             border: none;
             border-radius: 4px;
@@ -177,11 +190,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             background: #2196F3;
             color: white;
         }
+        .btn-publish {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-unpublish {
+            background: #FF9800;
+            color: white;
+        }
         .btn-delete {
             background: #f44336;
             color: white;
         }
-        .btn-edit:hover, .btn-delete:hover {
+        .btn-edit:hover, .btn-delete:hover, .btn-publish:hover, .btn-unpublish:hover {
             opacity: 0.8;
         }
         .empty {
@@ -259,6 +280,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </div>
                         <div class="event-actions">
                             <a href="/admin/event-editor.php?id=<?php echo urlencode($event['id']); ?>" class="btn-edit">Bewerk</a>
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="toggle-publish">
+                                <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['id']); ?>">
+                                <button type="submit" class="btn-<?php echo ($event['published'] ?? false) ? 'unpublish' : 'publish'; ?>">
+                                    <?php echo ($event['published'] ?? false) ? '🔓 Verbergen' : '✅ Publiceren'; ?>
+                                </button>
+                            </form>
                             <form method="POST" style="display: inline;" onsubmit="return confirm('Verwijderen?');">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['id']); ?>">
