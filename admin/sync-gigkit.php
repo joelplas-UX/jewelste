@@ -4,217 +4,130 @@
  * Laadt events van Gigkit iCal feed en synchroniseert naar events.json
  */
 
-// Set error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-// Gigkit iCal URL (zet webcal:// om naar https://)
-$GIGKIT_URL = 'webcal://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc3c77';
-$GIGKIT_FEED = str_replace('webcal://', 'https://', $GIGKIT_URL);
+// Gigkit iCal URL
+$GIGKIT_FEED = 'https://gigkit.nl/api/cal?token=6074e66c-f73b-41d2-ad5f-220732bc3c77';
 
-// Bepaal het juiste pad (werkt in local en GitHub Actions)
-// __DIR__ = /path/to/jewelste/admin
-// dirname(__DIR__) = /path/to/jewelste
-$JEWELSTE_DIR = dirname(__DIR__); // Go up from admin/ to jewelste root
-$EVENTS_FILE = $JEWELSTE_DIR . '/data/events.json';
+// Bepaal pad - probeer beide mogelijkheden
+$possible_paths = [
+    __DIR__ . '/../data/events.json',           // Local: /jewelste/admin/../data/events.json
+    getcwd() . '/data/events.json',             // GitHub Actions working dir
+];
 
-echo "📂 Script dir (__DIR__): " . __DIR__ . "\n";
-echo "📂 Jewelste root dir: $JEWELSTE_DIR\n";
-echo "📂 Events file: $EVENTS_FILE\n";
-
-// Maak data directory aan als deze niet bestaat
-$data_dir = dirname($EVENTS_FILE);
-if (!is_dir($data_dir)) {
-    echo "📂 Creating directory: $data_dir\n";
-    $mkdir_result = mkdir($data_dir, 0755, true);
-    if (!$mkdir_result) {
-        $last_error = error_get_last();
-        echo "❌ Error: mkdir failed\n";
-        echo "❌ PHP Error: " . ($last_error ? $last_error['message'] : 'unknown') . "\n";
-        echo "❌ Check: is_writable parent? " . (is_writable(dirname($data_dir)) ? 'yes' : 'no') . "\n";
-        exit(1);
+$EVENTS_FILE = null;
+foreach ($possible_paths as $path) {
+    $dir = dirname($path);
+    if (@mkdir($dir, 0755, true) || is_dir($dir)) {
+        $EVENTS_FILE = $path;
+        echo "✅ Using events file: $EVENTS_FILE\n";
+        break;
     }
-    echo "✅ Directory created successfully\n";
-} else {
-    echo "✅ Directory already exists\n";
+}
+
+if (!$EVENTS_FILE) {
+    echo "❌ Could not determine events file path\n";
+    exit(1);
 }
 
 /**
- * Parse iCal format
+ * Parse iCal
  */
-function parse_ical($ical_content) {
+function parse_ical($content) {
     $events = [];
-    $lines = explode("\n", $ical_content);
+    $lines = explode("\n", $content);
     $in_event = false;
     $event = [];
 
     foreach ($lines as $line) {
         $line = trim($line);
-
         if ($line === 'BEGIN:VEVENT') {
             $in_event = true;
             $event = [];
         } elseif ($line === 'END:VEVENT') {
-            if (!empty($event)) {
-                $events[] = $event;
-            }
+            if (!empty($event)) $events[] = $event;
             $in_event = false;
-        } elseif ($in_event) {
-            if (strpos($line, ':') !== false) {
-                [$key, $value] = explode(':', $line, 2);
-                $key = trim($key);
-                $value = trim($value);
-
-                // Parse parameters (bijv. DTSTART;TZID=...)
-                if (strpos($key, ';') !== false) {
-                    [$key] = explode(';', $key);
-                }
-
-                $event[$key] = $value;
-            }
+        } elseif ($in_event && strpos($line, ':') !== false) {
+            [$key, $value] = explode(':', $line, 2);
+            $key = explode(';', $key)[0];
+            $event[$key] = $value;
         }
     }
-
     return $events;
 }
 
 /**
- * Converteer iCal naar jeWelste format
+ * Convert to jeWelste format
  */
-function convert_event($ical_event) {
-    // Filter: alleen CONFIRMED (definitieve) events
-    $status = $ical_event['STATUS'] ?? 'CONFIRMED';
-    if ($status !== 'CONFIRMED') {
-        return null; // Skip tentative/cancelled events
-    }
+function convert_event($e) {
+    // Filter: CONFIRMED, PUBLIC, future only
+    if (($e['STATUS'] ?? 'CONFIRMED') !== 'CONFIRMED') return null;
+    if (($e['CLASS'] ?? 'PUBLIC') !== 'PUBLIC') return null;
 
-    // Filter: alleen PUBLIC (openbare) events
-    $class = $ical_event['CLASS'] ?? 'PUBLIC';
-    if ($class !== 'PUBLIC') {
-        return null; // Skip private/confidential events
-    }
-
-    $start = $ical_event['DTSTART'] ?? '';
-    $summary = $ical_event['SUMMARY'] ?? 'Event';
-    $location = $ical_event['LOCATION'] ?? '';
-    $description = $ical_event['DESCRIPTION'] ?? '';
-
-    // Parse datum/tijd
-    // iCal format: 20260415T200000 of 20260415 of met TZID: 20231125T211500 (na colon)
-    // Zet alles na colon als datum start
+    $start = $e['DTSTART'] ?? '';
     if (strpos($start, ':') !== false) {
         $start = substr($start, strpos($start, ':') + 1);
     }
 
-    if (preg_match('/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/', $start, $m)) {
-        $date = $m[1] . '-' . $m[2] . '-' . $m[3];
-        $time = isset($m[4]) ? $m[4] . ':' . $m[5] : '';
-    } else {
-        return null; // Kan datum niet parsen
+    if (!preg_match('/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/', $start, $m)) {
+        return null;
     }
 
-    // Filter: alleen events in de toekomst
-    $event_date = strtotime($date);
-    $today = strtotime(date('Y-m-d'));
-    if ($event_date < $today) {
-        return null; // Skip events in het verleden
+    $date = $m[1] . '-' . $m[2] . '-' . $m[3];
+
+    // Filter: future dates only
+    if (strtotime($date) < strtotime(date('Y-m-d'))) {
+        return null;
     }
 
     return [
         'id' => $date,
-        'title' => $summary,
+        'title' => $e['SUMMARY'] ?? 'Event',
         'date' => $date,
-        'startTime' => $time,
-        'endTime' => '', // iCal DTEND zou hier kunnen, maar vereenvoudigd voor nu
-        'location' => $location,
+        'startTime' => isset($m[4]) ? $m[4] . ':' . $m[5] : '',
+        'endTime' => '',
+        'location' => $e['LOCATION'] ?? '',
         'address' => '',
-        'type' => 'openbaar' // Gigkit events zijn openbaar
+        'type' => 'openbaar'
     ];
 }
 
-/**
- * Fetch iCal feed
- */
-function fetch_ical($url) {
-    $context = stream_context_create([
-        'http' => [
-            'timeout' => 10,
-            'user_agent' => 'jeWelste-Sync/1.0',
-            'ignore_errors' => true
-        ],
-        'ssl' => [
-            'verify_peer' => false,
-            'verify_peer_name' => false
-        ]
-    ]);
-
-    $content = @file_get_contents($url, false, $context);
-    if ($content === false || empty($content)) {
-        throw new Exception("Kon Gigkit feed niet laden: $url (response was empty or failed)");
-    }
-
-    // Check of het iCal format is
-    if (strpos($content, 'BEGIN:VCALENDAR') === false) {
-        throw new Exception("Response is geen valid iCal feed");
-    }
-
-    return $content;
-}
-
-/**
- * Main sync
- */
 try {
-    // Fetch iCal
-    echo "📡 Gigkit feed laden van: $GIGKIT_FEED\n";
-    $ical = fetch_ical($GIGKIT_FEED);
-    echo "✅ Feed geladen (" . strlen($ical) . " bytes)\n";
+    echo "📡 Fetching Gigkit feed...\n";
+    $ical = @file_get_contents($GIGKIT_FEED, false, stream_context_create([
+        'http' => ['timeout' => 10, 'user_agent' => 'jeWelste/1.0'],
+        'ssl' => ['verify_peer' => false]
+    ]));
 
-    // Parse
-    echo "📝 Events parsen...\n";
+    if (!$ical || strpos($ical, 'BEGIN:VCALENDAR') === false) {
+        throw new Exception('Invalid iCal feed');
+    }
+
+    echo "📝 Parsing events...\n";
     $ical_events = parse_ical($ical);
-    echo "   Total gevonden: " . count($ical_events) . " events\n";
+    echo "   Found: " . count($ical_events) . " total\n";
 
-    // Convert (filter on CONFIRMED + PUBLIC)
     $events = [];
-    $skipped = 0;
-    foreach ($ical_events as $ical_event) {
-        $event = convert_event($ical_event);
-        if ($event) {
-            $events[] = $event;
-        } else {
-            $skipped++;
-        }
-    }
-    echo "   Confirmed + Public: " . count($events) . " events\n";
-    echo "   Skipped: $skipped events\n";
-
-    // Sort op datum (nieuwste eerst)
-    usort($events, function($a, $b) {
-        return strtotime($b['date']) - strtotime($a['date']);
-    });
-
-    // Save
-    echo "💾 Events opslaan naar " . $EVENTS_FILE . "...\n";
-    $data = ['events' => $events];
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-    if ($json === false) {
-        throw new Exception("Kon events niet naar JSON encoderen: " . json_last_error_msg());
+    foreach ($ical_events as $e) {
+        $event = convert_event($e);
+        if ($event) $events[] = $event;
     }
 
-    $bytes_written = @file_put_contents($EVENTS_FILE, $json);
-    if ($bytes_written === false) {
-        throw new Exception("Kon " . $EVENTS_FILE . " niet schrijven (check permissions)");
+    usort($events, fn($a, $b) => strtotime($b['date']) - strtotime($a['date']));
+
+    echo "   Filtered: " . count($events) . " (CONFIRMED + PUBLIC + future)\n";
+    echo "💾 Writing to: $EVENTS_FILE\n";
+
+    $json = json_encode(['events' => $events], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    if (!file_put_contents($EVENTS_FILE, $json)) {
+        throw new Exception("Write failed to $EVENTS_FILE");
     }
 
-    echo "✅ Sync compleet! " . count($events) . " events opgeslagen (" . $bytes_written . " bytes).\n";
+    echo "✅ Sync complete! " . count($events) . " events saved\n";
     exit(0);
 
 } catch (Exception $e) {
-    echo "❌ FOUT: " . $e->getMessage() . "\n";
-    echo "❌ File: " . $e->getFile() . ":" . $e->getLine() . "\n";
-    echo "❌ Trace: " . $e->getTraceAsString() . "\n";
+    echo "❌ Error: " . $e->getMessage() . "\n";
     exit(1);
 }
-?>
