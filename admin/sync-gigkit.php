@@ -62,6 +62,18 @@ function parse_ical($ical_content) {
  * Converteer iCal naar jeWelste format
  */
 function convert_event($ical_event) {
+    // Filter: alleen CONFIRMED (definitieve) events
+    $status = $ical_event['STATUS'] ?? 'CONFIRMED';
+    if ($status !== 'CONFIRMED') {
+        return null; // Skip tentative/cancelled events
+    }
+
+    // Filter: alleen PUBLIC (openbare) events
+    $class = $ical_event['CLASS'] ?? 'PUBLIC';
+    if ($class !== 'PUBLIC') {
+        return null; // Skip private/confidential events
+    }
+
     $start = $ical_event['DTSTART'] ?? '';
     $summary = $ical_event['SUMMARY'] ?? 'Event';
     $location = $ical_event['LOCATION'] ?? '';
