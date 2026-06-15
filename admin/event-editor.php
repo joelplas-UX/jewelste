@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'location' => $_POST['location'] ?? '',
         'address' => $_POST['address'] ?? '',
         'type' => $_POST['type'] ?? 'openbaar',
-        'edited' => !$is_new  // Mark as edited if updating existing event
+        'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false)
     ];
 
     // Behoud UID bij update van Gigkit event
@@ -250,6 +250,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="small-text">Gebruik de datum als ID (wordt automatisch ingevuld)</div>
             </div>
 
+            <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
+                <input type="checkbox" id="published" name="published" value="1" <?php echo ($event['published'] ?? false) ? 'checked' : ''; ?> style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="published" style="margin: 0; cursor: pointer; font-weight: 600;">
+                    <?php if ($event['published'] ?? false): ?>
+                        ✅ Live op website
+                    <?php else: ?>
+                        ⏸ Concept (nog niet zichtbaar)
+                    <?php endif; ?>
+                </label>
+            </div>
+
             <script>
                 // Auto-fill ID op basis van datum
                 document.getElementById('date').addEventListener('change', function() {
@@ -259,6 +270,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!document.getElementById('id').value && document.getElementById('date').value) {
                     document.getElementById('id').value = document.getElementById('date').value;
                 }
+
+                // Update label als published checkbox verandert
+                const publishedCheckbox = document.getElementById('published');
+                const publishedLabel = publishedCheckbox.nextElementSibling;
+                publishedCheckbox.addEventListener('change', function() {
+                    publishedLabel.innerHTML = this.checked
+                        ? '✅ Live op website'
+                        : '⏸ Concept (nog niet zichtbaar)';
+                });
             </script>
 
             <div class="form-actions">

@@ -105,7 +105,7 @@ function convert_event($e) {
         'location' => $e['LOCATION'] ?? '',
         'address' => '',
         'type' => 'openbaar',
-        'edited' => false
+        'published' => false
     ];
 }
 
@@ -132,7 +132,7 @@ try {
 
     echo "   Filtered: " . count($gigkit_events) . " (no TENTATIVE + future only)\n";
 
-    // Load existing events to preserve edited flags
+    // Load existing events to preserve publishing status
     $existing_events = [];
     if (file_exists($EVENTS_FILE)) {
         $existing_data = json_decode(file_get_contents($EVENTS_FILE), true);
@@ -143,16 +143,23 @@ try {
         }
     }
 
-    // Merge: respect edited flag from existing events
+    // Merge: respect published status (don't overwrite published events)
     $merged_events = [];
+    $updated_count = 0;
+    $published_count = 0;
+
     foreach ($gigkit_events as $event) {
         $key = $event['uid'] ?? $event['id'];
-        if (isset($existing_events[$key]) && ($existing_events[$key]['edited'] ?? false)) {
-            // Keep existing edited event
-            echo "   ↷ Keeping edited: " . $event['title'] . "\n";
+        if (isset($existing_events[$key]) && ($existing_events[$key]['published'] ?? false)) {
+            // Keep published event, don't update from Gigkit
+            echo "   📌 Keeping published: " . $event['title'] . "\n";
             $merged_events[] = $existing_events[$key];
+            $published_count++;
         } else {
-            // Use Gigkit version
+            // Update with Gigkit version (new or unpublished)
+            if (isset($existing_events[$key])) {
+                $updated_count++;
+            }
             $merged_events[] = $event;
         }
     }
@@ -173,7 +180,11 @@ try {
         throw new Exception("Write failed to $EVENTS_FILE");
     }
 
-    echo "✅ Sync complete! " . count($merged_events) . " events total (" . count($gigkit_events) . " from Gigkit)\n";
+    echo "✅ Sync complete!\n";
+    echo "   Total: " . count($merged_events) . " events\n";
+    echo "   From Gigkit: " . count($gigkit_events) . "\n";
+    echo "   Updated: $updated_count\n";
+    echo "   Published (protected): $published_count\n";
     exit(0);
 
 } catch (Exception $e) {

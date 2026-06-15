@@ -149,6 +149,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             background: #f3e5f5;
             color: #6a1b9a;
         }
+        .badge-published {
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+        .badge-concept {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .event-card.unpublished {
+            opacity: 0.7;
+            border-left: 4px solid #ff9800;
+        }
         .event-actions {
             display: flex;
             gap: 8px;
@@ -214,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <?php else: ?>
             <div class="events-list">
                 <?php foreach ($events as $event): ?>
-                    <div class="event-card">
+                    <div class="event-card <?php echo !($event['published'] ?? false) ? 'unpublished' : ''; ?>">
                         <div class="event-info">
                             <h3><?php echo htmlspecialchars($event['title']); ?></h3>
                             <div class="event-date">
@@ -239,6 +251,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div>
                                 <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
                                     <?php echo $event['type'] === 'openbaar' ? 'Openbaar' : 'Besloten'; ?>
+                                </span>
+                                <span class="event-badge badge-<?php echo ($event['published'] ?? false) ? 'published' : 'concept'; ?>">
+                                    <?php echo ($event['published'] ?? false) ? '✅ Live' : '⏸ Concept'; ?>
                                 </span>
                             </div>
                         </div>

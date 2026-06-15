@@ -86,15 +86,18 @@ async function initAgenda() {
   today.setHours(0, 0, 0, 0);
 
   function getFiltered(filter) {
+    // Alleen gepubliceerde events tonen
+    const published = allEvents.filter(ev => ev.published !== false);
+
     if (filter === 'upcoming') {
-      return [...allEvents]
+      return [...published]
         .filter(ev => parseDate(ev.date) >= today)
         .sort((a, b) => parseDate(a.date) - parseDate(b.date));
     }
     if (filter === 'past') {
-      return allEvents.filter(ev => parseDate(ev.date) < today);
+      return published.filter(ev => parseDate(ev.date) < today);
     }
-    return allEvents;
+    return published;
   }
 
   let activeFilter = 'upcoming';
