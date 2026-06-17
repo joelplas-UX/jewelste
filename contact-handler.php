@@ -4,6 +4,7 @@
  * Verwerkt contactformulier en stuurt email naar info@jewelste.nl
  */
 
+session_start();
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -11,6 +12,53 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['error' => 'Method not allowed']);
     exit;
 }
+
+// ==================== SPAM DETECTION ====================
+
+// 1. Honeypot check - if the hidden field is filled, it's spam
+if (!empty($_POST['website_url'] ?? '')) {
+    // Silently return success to confuse spambots
+    http_response_code(200);
+    echo json_encode(['success' => true, 'message' => 'Bericht verzonden!']);
+    exit;
+}
+
+// 2. Timing check - must take at least 2 seconds to fill form
+$formStartTime = (int) ($_POST['form_start_time'] ?? 0);
+if ($formStartTime > 0) {
+    $fillTime = time() - $formStartTime;
+    if ($fillTime < 2) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Formulier te snel ingevuld. Probeer het opnieuw.']);
+        exit;
+    }
+}
+
+// 3. Rate limiting - max 5 messages per IP per hour
+$clientIP = $_SERVER['REMOTE_ADDR'];
+$rateLimitKey = 'contact_form_' . $clientIP;
+$maxSubmissions = 5;
+$timeWindow = 3600; // 1 hour
+
+if (!isset($_SESSION[$rateLimitKey])) {
+    $_SESSION[$rateLimitKey] = [];
+}
+
+// Remove old submissions outside the time window
+$currentTime = time();
+$_SESSION[$rateLimitKey] = array_filter($_SESSION[$rateLimitKey], function($timestamp) use ($currentTime, $timeWindow) {
+    return ($currentTime - $timestamp) < $timeWindow;
+});
+
+// Check if limit exceeded
+if (count($_SESSION[$rateLimitKey]) >= $maxSubmissions) {
+    http_response_code(429);
+    echo json_encode(['error' => 'Te veel berichten verzonden. Probeer het later opnieuw.']);
+    exit;
+}
+
+// Add current submission to session
+$_SESSION[$rateLimitKey][] = $currentTime;
 
 // Validate required fields
 $naam = trim($_POST['naam'] ?? '');

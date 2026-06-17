@@ -148,6 +148,10 @@
               method="POST"
               action="/contact-handler.php">
 
+          <!-- Honeypot field (hidden from users, filled by spambots) -->
+          <input type="text" name="website_url" style="display:none;" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="form_start_time" id="form_start_time" value="">
+
           <div class="form-grid">
             <div class="form-group">
               <label for="naam">Naam *</label>
@@ -249,11 +253,15 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('contact-form');
+  const formStartTimeField = document.getElementById('form_start_time');
   const successMsg = document.getElementById('form-success-msg');
   const errorMsg = document.getElementById('form-error-msg');
   const errorText = document.getElementById('error-text');
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalBtnText = submitBtn.textContent;
+
+  // Set form start time when page loads
+  formStartTimeField.value = Math.floor(Date.now() / 1000);
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -278,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok && result.success) {
         successMsg.style.display = 'block';
         form.reset();
+        formStartTimeField.value = Math.floor(Date.now() / 1000);
       } else {
         errorMsg.style.display = 'block';
         errorText.textContent = result.error || 'Er is een fout opgetreden';
