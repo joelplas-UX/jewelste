@@ -43,19 +43,22 @@ function renderEvents(events, container) {
         : '<span class="event-badge badge-besloten">Besloten</span>';
     }
 
-    // Voor private events (CLASS:PRIVATE): toon "Besloten optreden" zonder locatie
+    // Voor private events (CLASS:PRIVATE): toon alleen "Besloten feest", niks anders
     let location = '';
     let title = ev.title;
+    let time = '';
+
     if (ev.class === 'PRIVATE') {
       title = '🔒 Besloten feest';
-      location = '<span>🔒 Besloten optreden</span>';
-    } else if (ev.location) {
-      location = `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`;
+      // Geen location, geen time voor private events
+    } else {
+      if (ev.location) {
+        location = `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`;
+      }
+      time = ev.startTime
+        ? `<span>🕐 ${ev.startTime}${ev.endTime ? ' – ' + ev.endTime : ''}</span>`
+        : '';
     }
-
-    const time = ev.startTime
-      ? `<span>🕐 ${ev.startTime}${ev.endTime ? ' – ' + ev.endTime : ''}</span>`
-      : '';
 
     return `
       <div class="event-card">
