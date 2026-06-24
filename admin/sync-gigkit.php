@@ -73,9 +73,12 @@ function parse_ical($content) {
 
 /**
  * Extract performance time from DESCRIPTION (looks for "Spelen: HH:MM")
+ * Handles both "Spelen: 21:00" and "Spelen: 20:30 – 00:00" formats
  */
 function extract_performance_time($description) {
-    if (preg_match('/Spelen:\s*(\d{1,2}):(\d{2})/', $description, $m)) {
+    // Look for "Spelen:" followed by time (HH:MM)
+    // Handles escaped colons (\:) from iCal format
+    if (preg_match('/Spelen[:\s]*\s*(\d{1,2}):(\d{2})/', $description, $m)) {
         return str_pad($m[1], 2, '0', STR_PAD_LEFT) . ':' . $m[2];
     }
     return null;
