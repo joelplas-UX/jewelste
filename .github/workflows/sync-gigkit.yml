@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download current events from live site
+        run: |
+          mkdir -p data
+          curl -s https://jewelste.nl/data/events.json -o data/events.json || echo "Warning: Could not fetch live events.json"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
