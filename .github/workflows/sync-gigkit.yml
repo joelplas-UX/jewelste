@@ -34,5 +34,9 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./data/
           server-dir: ${{ secrets.FTP_PATH }}/data/
-          state-name: .ftp-deploy-sync-state.json
           dangerous-clean-slate: false
+          exclude: |
+            .git*
+            node_modules/**
+            venv/
+            .env
