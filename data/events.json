@@ -1,74 +1,95 @@
 {
   "events": [
     {
-      "id": "2025-11-21",
-      "title": "Besloten optreden",
-      "date": "2025-11-21",
-      "startTime": "20:00",
-      "endTime": "24:00",
-      "location": "",
-      "address": "",
-      "type": "besloten"
-    },
-    {
-      "id": "2025-10-16",
-      "title": "Besloten optreden",
-      "date": "2025-10-16",
-      "startTime": "20:00",
-      "endTime": "01:00",
-      "location": "",
-      "address": "",
-      "type": "besloten"
-    },
-    {
-      "id": "2025-09-18",
-      "title": "Cafe Hogenboom — Kermis Roelofarendsveen",
-      "date": "2025-09-18",
-      "startTime": "21:00",
-      "endTime": "00:30",
-      "location": "Cafe Hogenboom",
-      "address": "Roelofarendsveen",
-      "type": "openbaar"
-    },
-    {
-      "id": "2025-09-06",
-      "title": "Zuidpop",
-      "date": "2025-09-06",
-      "startTime": "19:00",
-      "endTime": "21:00",
-      "location": "Zuidpop",
-      "address": "Pijnacker",
-      "type": "openbaar"
-    },
-    {
-      "id": "2025-05-24",
+      "id": "2026-06-20",
+      "uid": "event_2026-06-20_DownUnderBeach@band-agenda",
       "title": "DownUnderBeach",
-      "date": "2025-05-24",
-      "startTime": "20:30",
-      "endTime": "01:00",
+      "date": "2026-06-20",
+      "startTime": "22:00",
+      "endTime": "",
       "location": "DownUnderBeach",
       "address": "Scheveningen",
-      "type": "openbaar"
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
     },
     {
-      "id": "2025-04-25",
-      "title": "Grand Café de Burcht",
-      "date": "2025-04-25",
-      "startTime": "21:00",
-      "endTime": "23:30",
-      "location": "Grand Café de Burcht",
-      "address": "Leiden",
-      "type": "openbaar"
+      "id": "2026-06-26",
+      "uid": "event_2026-06-26_Lakenfeesten@band-agenda",
+      "title": "Lakenfeesten",
+      "date": "2026-06-26",
+      "startTime": "20:30",
+      "endTime": "",
+      "location": "Lakenfeesten",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
     },
     {
-      "id": "2025-03-29",
-      "title": "Muziekcentrum Zoeterwoude",
-      "date": "2025-03-29",
-      "startTime": "20:00",
-      "endTime": "23:30",
-      "location": "Muziekcentrum Zoeterwoude",
-      "address": "Schenkelweg 6, Zoeterwoude 2381 AN",
-      "type": "openbaar"
+      "id": "2026-06-27",
+      "uid": "event_2026-06-27_Allemansgeest@band-agenda",
+      "title": "Restaurant Allemansgeest",
+      "date": "2026-06-27",
+      "startTime": "22:00",
+      "endTime": "",
+      "location": "Restaurant Allemansgeest",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
+    },
+    {
+      "id": "2026-08-29",
+      "uid": "event_2026-08-29_Theaterbakkerij@band-agenda",
+      "title": "De Theaterbakkerij",
+      "date": "2026-08-29",
+      "startTime": "",
+      "endTime": "",
+      "location": "De Theaterbakkerij",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
+    },
+    {
+      "id": "2026-09-05",
+      "uid": "event_2026-09-05_Dorpsfeest@band-agenda",
+      "title": "Dorpsfeest Oegstgeest",
+      "date": "2026-09-05",
+      "startTime": "17:30",
+      "endTime": "",
+      "location": "Dorpsfeest Oegstgeest",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
+    },
+    {
+      "id": "2026-09-17",
+      "uid": "event_2026-09-17_Hogenboom@band-agenda",
+      "title": "Cafe Hogenboom",
+      "date": "2026-09-17",
+      "startTime": "17:45",
+      "endTime": "",
+      "location": "Cafe Hogenboom",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
+    },
+    {
+      "id": "2026-10-10",
+      "uid": "event_2026-10-10_Outdoors@band-agenda",
+      "title": "Outdoors Holten",
+      "date": "2026-10-10",
+      "startTime": "20:30",
+      "endTime": "",
+      "location": "Outdoors Holten",
+      "address": "",
+      "type": "openbaar",
+      "class": "PUBLIC",
+      "published": false
     }
   ]
 }
