@@ -176,17 +176,20 @@ try {
         }
 
         // Update or add event
-        if ($existing && ($existing['published'] ?? false)) {
-            // Keep published event, don't update from Gigkit
-            echo "   📌 Keeping published: " . $event['title'] . "\n";
-            $merged_events[] = $existing;
-            $published_count++;
-        } else {
-            // Update with Gigkit version (new or unpublished)
-            if ($existing) {
+        if ($existing) {
+            // Protect published events OR manually created events (no UID)
+            if (($existing['published'] ?? false) || !($existing['uid'] ?? null)) {
+                echo "   📌 Keeping: " . $event['title'] . " (published or manual)\n";
+                $merged_events[] = $existing;
+                if ($existing['published'] ?? false) $published_count++;
+            } else {
+                // Update unpublished Gigkit events
                 $updated_count++;
                 echo "   🔄 Updating: " . $event['title'] . "\n";
+                $merged_events[] = $event;
             }
+        } else {
+            // New event from Gigkit
             $merged_events[] = $event;
         }
 
