@@ -77,8 +77,8 @@ function parse_ical($content) {
  */
 function extract_performance_time($description) {
     // Look for "Spelen:" followed by time (HH:MM)
-    // Handles escaped colons (\:) from iCal format
-    if (preg_match('/Spelen[:\s]*\s*(\d{1,2}):(\d{2})/', $description, $m)) {
+    // Case insensitive, handles variations
+    if (preg_match('/spelen\s*[:\-]?\s*(\d{1,2}):(\d{2})/i', $description, $m)) {
         return str_pad($m[1], 2, '0', STR_PAD_LEFT) . ':' . $m[2];
     }
     return null;
@@ -113,8 +113,10 @@ function convert_event($e) {
     $performanceTime = extract_performance_time($description);
     if ($performanceTime) {
         $startTime = $performanceTime;
+        echo "   ⏰ Got performance time: $performanceTime\n";
     } elseif (isset($m[4])) {
         $startTime = $m[4] . ':' . $m[5];
+        echo "   ⏰ Using DTSTART time: $startTime\n";
     }
 
     return [
