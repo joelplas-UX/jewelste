@@ -72,6 +72,16 @@ function parse_ical($content) {
 }
 
 /**
+ * Extract performance time from DESCRIPTION (looks for "Spelen: HH:MM")
+ */
+function extract_performance_time($description) {
+    if (preg_match('/Spelen:\s*(\d{1,2}):(\d{2})/', $description, $m)) {
+        return str_pad($m[1], 2, '0', STR_PAD_LEFT) . ':' . $m[2];
+    }
+    return null;
+}
+
+/**
  * Convert to jeWelste format
  */
 function convert_event($e) {
@@ -94,12 +104,22 @@ function convert_event($e) {
         return null;
     }
 
+    // Try to get performance time from DESCRIPTION, fallback to DTSTART time
+    $startTime = '';
+    $description = $e['DESCRIPTION'] ?? '';
+    $performanceTime = extract_performance_time($description);
+    if ($performanceTime) {
+        $startTime = $performanceTime;
+    } elseif (isset($m[4])) {
+        $startTime = $m[4] . ':' . $m[5];
+    }
+
     return [
         'id' => $date,
         'uid' => $e['UID'] ?? null,
         'title' => $e['SUMMARY'] ?? 'Event',
         'date' => $date,
-        'startTime' => isset($m[4]) ? $m[4] . ':' . $m[5] : '',
+        'startTime' => $startTime,
         'endTime' => '',
         'location' => $e['LOCATION'] ?? '',
         'address' => '',
