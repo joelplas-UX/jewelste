@@ -32,9 +32,16 @@ function renderEvents(events, container) {
 
   container.innerHTML = events.map(ev => {
     const dt = formatEventDate(ev.date);
-    const badge = ev.type === 'openbaar'
-      ? '<span class="event-badge badge-openbaar">Openbaar</span>'
-      : '<span class="event-badge badge-besloten">Besloten</span>';
+
+    // Voor private events (CLASS:PRIVATE): altijd "Besloten" badge
+    let badge = '';
+    if (ev.class === 'PRIVATE') {
+      badge = '<span class="event-badge badge-besloten">Besloten</span>';
+    } else {
+      badge = ev.type === 'openbaar'
+        ? '<span class="event-badge badge-openbaar">Openbaar</span>'
+        : '<span class="event-badge badge-besloten">Besloten</span>';
+    }
 
     // Voor private events (CLASS:PRIVATE): toon "Besloten optreden" zonder locatie
     let location = '';
