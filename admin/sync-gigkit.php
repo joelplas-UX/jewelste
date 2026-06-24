@@ -130,7 +130,8 @@ function convert_event($e) {
         'address' => '',
         'type' => 'openbaar',
         'class' => $e['CLASS'] ?? 'PUBLIC',
-        'published' => false
+        'published' => false,
+        '_existing_published' => null  // Will be filled by merge logic
     ];
 }
 
@@ -216,9 +217,14 @@ try {
                 $merged_events[] = $existing;
                 if ($is_published) $published_count++;
             } else {
-                // Update unpublished Gigkit events (with UID, not locked)
+                // Update unpublished Gigkit events, but preserve published status
                 $updated_count++;
                 echo "   🔄 Updating: " . $event['title'] . "\n";
+                // Preserve published status from existing event
+                if ($is_published) {
+                    $event['published'] = true;
+                    $published_count++;
+                }
                 $merged_events[] = $event;
             }
         } else {
