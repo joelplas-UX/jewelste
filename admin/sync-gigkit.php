@@ -177,13 +177,21 @@ try {
 
         // Update or add event
         if ($existing) {
-            // Protect published events OR manually created events (no UID)
-            if (($existing['published'] ?? false) || !($existing['uid'] ?? null)) {
-                echo "   📌 Keeping: " . $event['title'] . " (published or manual)\n";
+            // Protect: published events, manually created (no UID), or locked events
+            $is_published = ($existing['published'] ?? false);
+            $is_manual = !($existing['uid'] ?? null);
+            $is_locked = ($existing['locked'] ?? false);
+
+            if ($is_published || $is_manual || $is_locked) {
+                echo "   📌 Keeping: " . $event['title'] . " (";
+                if ($is_locked) echo "locked, ";
+                if ($is_published) echo "published, ";
+                if ($is_manual) echo "manual";
+                echo ")\n";
                 $merged_events[] = $existing;
-                if ($existing['published'] ?? false) $published_count++;
+                if ($is_published) $published_count++;
             } else {
-                // Update unpublished Gigkit events
+                // Update unpublished Gigkit events (with UID, not locked)
                 $updated_count++;
                 echo "   🔄 Updating: " . $event['title'] . "\n";
                 $merged_events[] = $event;
