@@ -38,7 +38,9 @@ function renderEvents(events, container) {
 
     // Voor private events (CLASS:PRIVATE): toon "Besloten optreden" zonder locatie
     let location = '';
+    let title = ev.title;
     if (ev.class === 'PRIVATE') {
+      title = '🔒 Besloten feest';
       location = '<span>🔒 Besloten optreden</span>';
     } else if (ev.location) {
       location = `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`;
@@ -55,7 +57,7 @@ function renderEvents(events, container) {
           <div class="month">${dt.month} '${String(dt.year).slice(2)}</div>
         </div>
         <div class="event-info">
-          <h3>${ev.title}</h3>
+          <h3>${title}</h3>
           <div class="event-meta">
             ${location}
             ${time}
