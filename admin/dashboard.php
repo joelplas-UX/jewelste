@@ -287,13 +287,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="event-actions">
                             <a href="/admin/event-editor.php?id=<?php echo urlencode($event['id']); ?>" class="btn-edit">Bewerk</a>
-                            <form method="POST" style="display: inline;">
-                                <input type="hidden" name="action" value="toggle-publish">
-                                <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['id']); ?>">
-                                <button type="submit" class="btn-<?php echo ($event['published'] ?? false) ? 'unpublish' : 'publish'; ?>">
-                                    <?php echo ($event['published'] ?? false) ? '🔓 Verbergen' : '✅ Publiceren'; ?>
-                                </button>
-                            </form>
+                            <button class="btn-<?php echo ($event['published'] ?? false) ? 'unpublish' : 'publish'; ?>" data-event-id="<?php echo htmlspecialchars($event['id']); ?>" onclick="togglePublish(event)">
+                                <?php echo ($event['published'] ?? false) ? '🔓 Verbergen' : '✅ Publiceren'; ?>
+                            </button>
                             <form method="POST" style="display: inline;" onsubmit="return confirm('Verwijderen?');">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['id']); ?>">
@@ -305,5 +301,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
     </div>
+
+    <script>
+    async function togglePublish(event) {
+        event.preventDefault();
+        const button = event.target;
+        const eventId = button.getAttribute('data-event-id');
+        const card = button.closest('.event-card');
+
+        try {
+            const formData = new FormData();
+            formData.append('action', 'toggle-publish');
+            formData.append('event_id', eventId);
+
+            const response = await fetch('/admin/dashboard.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const isNowPublished = card.classList.contains('unpublished');
+
+                // Update card styling
+                if (isNowPublished) {
+                    card.classList.remove('unpublished');
+                } else {
+                    card.classList.add('unpublished');
+                }
+
+                // Update badge
+                const badge = card.querySelector('.badge-published, .badge-concept');
+                if (badge) {
+                    badge.classList.toggle('badge-published');
+                    badge.classList.toggle('badge-concept');
+                    badge.textContent = isNowPublished ? '✅ Live' : '⏸ Concept';
+                }
+
+                // Update button
+                button.classList.toggle('btn-publish');
+                button.classList.toggle('btn-unpublish');
+                button.textContent = isNowPublished ? '🔓 Verbergen' : '✅ Publiceren';
+            }
+        } catch (error) {
+            console.error('Error toggling publish:', error);
+            alert('Er is een fout opgetreden');
+        }
+    }
+    </script>
 </body>
 </html>
