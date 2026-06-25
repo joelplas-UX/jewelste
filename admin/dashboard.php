@@ -249,8 +249,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="/admin/event-editor.php" class="btn-new">Voeg een optreden toe</a>
             </div>
         <?php else: ?>
-            <div class="events-list">
-                <?php foreach ($events as $event): ?>
+            <?php
+            // Split events into upcoming and past
+            $today = date('Y-m-d');
+            $upcoming = array_filter($events, function($e) use ($today) {
+                return $e['date'] >= $today;
+            });
+            $past = array_filter($events, function($e) use ($today) {
+                return $e['date'] < $today;
+            });
+
+            // Sort past events descending (newest first)
+            usort($past, function($a, $b) {
+                return strtotime($b['date']) - strtotime($a['date']);
+            });
+            ?>
+
+            <!-- AANKOMENDE OPTREDENS -->
+            <?php if (!empty($upcoming)): ?>
+                <h3 style="font-size: 1.2rem; margin-top: 0; margin-bottom: 24px; color: #161616;">📅 Aankomende optredens</h3>
+                <div class="events-list">
+                    <?php foreach ($upcoming as $event): ?>
                     <div class="event-card <?php echo !($event['published'] ?? false) ? 'unpublished' : ''; ?>">
                         <div class="event-info">
                             <h3><?php echo htmlspecialchars($event['title']); ?></h3>
@@ -297,8 +316,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </form>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- EERDERE OPTREDENS -->
+            <?php if (!empty($past)): ?>
+                <h3 style="font-size: 1.2rem; margin-top: 40px; margin-bottom: 24px; color: #161616;">✅ Eerdere optredens</h3>
+                <div class="events-list">
+                    <?php foreach ($past as $event): ?>
+                    <div class="event-card <?php echo !($event['published'] ?? false) ? 'unpublished' : ''; ?>">
+                        <div class="event-info">
+                            <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+                            <div class="event-date">
+                                📅 <?php
+                                    $date = DateTime::createFromFormat('Y-m-d', $event['date']);
+                                    echo $date ? $date->format('d M Y') : $event['date'];
+                                ?>
+                            </div>
+                            <?php if (!empty($event['startTime'])): ?>
+                                <div class="event-meta">
+                                    🕐 <?php echo htmlspecialchars($event['startTime']); ?>
+                                    <?php if (!empty($event['endTime'])): ?>
+                                        – <?php echo htmlspecialchars($event['endTime']); ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($event['location'])): ?>
+                                <div class="event-meta">
+                                    📍 <?php echo htmlspecialchars($event['location']); ?><?php echo !empty($event['address']) ? ', ' . htmlspecialchars($event['address']) : ''; ?>
+                                </div>
+                            <?php endif; ?>
+                            <div>
+                                <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
+                                    <?php echo $event['type'] === 'openbaar' ? 'Openbaar' : 'Besloten'; ?>
+                                </span>
+                                <span class="event-badge badge-<?php echo ($event['published'] ?? false) ? 'published' : 'concept'; ?>">
+                                    <?php echo ($event['published'] ?? false) ? '✅ Live' : '⏸ Concept'; ?>
+                                </span>
+                                <?php if (($event['class'] ?? 'PUBLIC') === 'PRIVATE'): ?>
+                                    <span class="event-badge badge-private">🔒 Prive</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="event-actions">
+                            <a href="/admin/event-editor.php?id=<?php echo urlencode($event['id']); ?>" class="btn-edit">Bewerk</a>
+                            <button class="btn-<?php echo ($event['published'] ?? false) ? 'unpublish' : 'publish'; ?>" data-event-id="<?php echo htmlspecialchars($event['id']); ?>" onclick="togglePublish(event)">
+                                <?php echo ($event['published'] ?? false) ? '🔓 Verbergen' : '✅ Publiceren'; ?>
+                            </button>
+                            <form method="POST" style="display: inline;" onsubmit="return confirm('Verwijderen?');">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['id']); ?>">
+                                <button type="submit" class="btn-delete">Verwijder</button>
+                            </form>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 
