@@ -39,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'location' => $_POST['location'] ?? '',
         'address' => $_POST['address'] ?? '',
         'type' => $_POST['type'] ?? 'openbaar',
-        'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false)
+        'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false),
+        'cancelled' => isset($_POST['cancelled']) ? (bool)$_POST['cancelled'] : ($event['cancelled'] ?? false)
     ];
 
     // Behoud UID bij update van Gigkit event
@@ -251,6 +252,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
+                <input type="checkbox" id="cancelled" name="cancelled" value="1" <?php echo ($event['cancelled'] ?? false) ? 'checked' : ''; ?> style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="cancelled" style="margin: 0; cursor: pointer; font-weight: 600;">
+                    <?php if ($event['cancelled'] ?? false): ?>
+                        ❌ Geannuleerd
+                    <?php else: ?>
+                        ✅ Normale status
+                    <?php endif; ?>
+                </label>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
                 <input type="checkbox" id="published" name="published" value="1" <?php echo ($event['published'] ?? false) ? 'checked' : ''; ?> style="width: 18px; height: 18px; cursor: pointer;">
                 <label for="published" style="margin: 0; cursor: pointer; font-weight: 600;">
                     <?php if ($event['published'] ?? false): ?>
@@ -270,6 +282,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!document.getElementById('id').value && document.getElementById('date').value) {
                     document.getElementById('id').value = document.getElementById('date').value;
                 }
+
+                // Update label als cancelled checkbox verandert
+                const cancelledCheckbox = document.getElementById('cancelled');
+                const cancelledLabel = cancelledCheckbox.nextElementSibling;
+                cancelledCheckbox.addEventListener('change', function() {
+                    cancelledLabel.innerHTML = this.checked
+                        ? '❌ Geannuleerd'
+                        : '✅ Normale status';
+                });
 
                 // Update label als published checkbox verandert
                 const publishedCheckbox = document.getElementById('published');

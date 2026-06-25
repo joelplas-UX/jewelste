@@ -575,6 +575,22 @@ section { padding: 80px 0; }
 
 .badge-openbaar { background: #e0f7e9; color: #1a7a3a; }
 .badge-besloten { background: #ffecd6; color: #a85500; }
+.badge-cancelled { background: #ffebee; color: #c62828; }
+
+.event-card.cancelled {
+  opacity: 0.6;
+  border-left: 4px solid #c62828;
+}
+
+.event-card.cancelled h3 {
+  color: #999;
+}
+
+.event-card.cancelled del {
+  text-decoration: line-through;
+  text-decoration-color: #c62828;
+  text-decoration-thickness: 2px;
+}
 
 .event-empty {
   text-align: center;

@@ -32,10 +32,13 @@ function renderEvents(events, container) {
 
   container.innerHTML = events.map(ev => {
     const dt = formatEventDate(ev.date);
+    const isCancelled = ev.cancelled ?? false;
 
-    // Voor private events (CLASS:PRIVATE): altijd "Besloten" badge
+    // Voor cancelled events: toon "GEANNULEERD" badge
     let badge = '';
-    if (ev.class === 'PRIVATE') {
+    if (isCancelled) {
+      badge = '<span class="event-badge badge-cancelled">❌ GEANNULEERD</span>';
+    } else if (ev.class === 'PRIVATE') {
       badge = '<span class="event-badge badge-besloten">Besloten</span>';
     } else {
       badge = ev.type === 'openbaar'
@@ -48,7 +51,9 @@ function renderEvents(events, container) {
     let title = ev.title;
     let time = '';
 
-    if (ev.class === 'PRIVATE') {
+    if (isCancelled) {
+      title = `<del>${ev.title}</del>`;
+    } else if (ev.class === 'PRIVATE') {
       title = '🔒 Besloten feest';
       // Geen location, geen time voor private events
     } else {
@@ -60,8 +65,10 @@ function renderEvents(events, container) {
         : '';
     }
 
+    const cardClass = isCancelled ? 'event-card cancelled' : 'event-card';
+
     return `
-      <div class="event-card">
+      <div class="${cardClass}">
         <div class="event-date">
           <div class="day">${dt.day}</div>
           <div class="month">${dt.month} '${String(dt.year).slice(2)}</div>
