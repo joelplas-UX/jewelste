@@ -255,9 +255,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="checkbox" id="cancelled" name="cancelled" value="1" <?php echo ($event['cancelled'] ?? false) ? 'checked' : ''; ?> style="width: 18px; height: 18px; cursor: pointer;">
                 <label for="cancelled" style="margin: 0; cursor: pointer; font-weight: 600;">
                     <?php if ($event['cancelled'] ?? false): ?>
-                        ❌ Geannuleerd
+                        🔴 Geannuleerd
                     <?php else: ?>
-                        ✅ Normale status
+                        Optreden staat gepland
                     <?php endif; ?>
                 </label>
             </div>
@@ -288,8 +288,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const cancelledLabel = cancelledCheckbox.nextElementSibling;
                 cancelledCheckbox.addEventListener('change', function() {
                     cancelledLabel.innerHTML = this.checked
-                        ? '❌ Geannuleerd'
-                        : '✅ Normale status';
+                        ? '🔴 Geannuleerd'
+                        : 'Optreden staat gepland';
                 });
 
                 // Update label als published checkbox verandert
