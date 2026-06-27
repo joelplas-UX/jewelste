@@ -293,9 +293,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             <?php endif; ?>
                             <div>
-                                <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
-                                    <?php echo $event['type'] === 'openbaar' ? 'Openbaar' : 'Besloten'; ?>
-                                </span>
+                                <?php if ($event['type'] === 'geannuleerd'): ?>
+                                    <span class="event-badge badge-cancelled">❌ GEANNULEERD</span>
+                                <?php else: ?>
+                                    <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
+                                        <?php echo $event['type'] === 'openbaar' ? '🟢 Openbaar' : '🔒 Besloten'; ?>
+                                    </span>
+                                <?php endif; ?>
                                 <span class="event-badge badge-<?php echo ($event['published'] ?? false) ? 'published' : 'concept'; ?>">
                                     <?php echo ($event['published'] ?? false) ? '✅ Live' : '⏸ Concept'; ?>
                                 </span>
@@ -348,9 +352,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             <?php endif; ?>
                             <div>
-                                <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
-                                    <?php echo $event['type'] === 'openbaar' ? 'Openbaar' : 'Besloten'; ?>
-                                </span>
+                                <?php if ($event['type'] === 'geannuleerd'): ?>
+                                    <span class="event-badge badge-cancelled">❌ GEANNULEERD</span>
+                                <?php else: ?>
+                                    <span class="event-badge badge-<?php echo $event['type'] === 'openbaar' ? 'openbaar' : 'besloten'; ?>">
+                                        <?php echo $event['type'] === 'openbaar' ? '🟢 Openbaar' : '🔒 Besloten'; ?>
+                                    </span>
+                                <?php endif; ?>
                                 <span class="event-badge badge-<?php echo ($event['published'] ?? false) ? 'published' : 'concept'; ?>">
                                     <?php echo ($event['published'] ?? false) ? '✅ Live' : '⏸ Concept'; ?>
                                 </span>

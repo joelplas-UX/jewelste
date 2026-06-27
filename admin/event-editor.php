@@ -39,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'location' => $_POST['location'] ?? '',
         'address' => $_POST['address'] ?? '',
         'type' => $_POST['type'] ?? 'openbaar',
-        'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false),
-        'cancelled' => isset($_POST['cancelled']) ? (bool)$_POST['cancelled'] : ($event['cancelled'] ?? false)
+        'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false)
     ];
 
     // Behoud UID bij update van Gigkit event
@@ -240,8 +239,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="type">Type optreden *</label>
                 <select id="type" name="type" required>
-                    <option value="openbaar" <?php echo ($event['type'] ?? 'openbaar') === 'openbaar' ? 'selected' : ''; ?>>Openbaar</option>
-                    <option value="besloten" <?php echo ($event['type'] ?? '') === 'besloten' ? 'selected' : ''; ?>>Besloten</option>
+                    <option value="openbaar" <?php echo ($event['type'] ?? 'openbaar') === 'openbaar' ? 'selected' : ''; ?>>🟢 Openbaar</option>
+                    <option value="besloten" <?php echo ($event['type'] ?? '') === 'besloten' ? 'selected' : ''; ?>>🔒 Besloten</option>
+                    <option value="geannuleerd" <?php echo ($event['type'] ?? '') === 'geannuleerd' ? 'selected' : ''; ?>>❌ Geannuleerd</option>
                 </select>
             </div>
 
@@ -249,17 +249,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="id">Unieke ID *</label>
                 <input type="text" id="id" name="id" placeholder="Bijv. 2026-04-15" value="<?php echo htmlspecialchars($event['id'] ?? ''); ?>" required readonly style="background: #f5f5f5;">
                 <div class="small-text">Gebruik de datum als ID (wordt automatisch ingevuld)</div>
-            </div>
-
-            <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
-                <input type="checkbox" id="cancelled" name="cancelled" value="1" <?php echo ($event['cancelled'] ?? false) ? 'checked' : ''; ?> style="width: 18px; height: 18px; cursor: pointer;">
-                <label for="cancelled" style="margin: 0; cursor: pointer; font-weight: 600;">
-                    <?php if ($event['cancelled'] ?? false): ?>
-                        🔴 Geannuleerd
-                    <?php else: ?>
-                        Optreden staat gepland
-                    <?php endif; ?>
-                </label>
             </div>
 
             <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
@@ -282,15 +271,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!document.getElementById('id').value && document.getElementById('date').value) {
                     document.getElementById('id').value = document.getElementById('date').value;
                 }
-
-                // Update label als cancelled checkbox verandert
-                const cancelledCheckbox = document.getElementById('cancelled');
-                const cancelledLabel = cancelledCheckbox.nextElementSibling;
-                cancelledCheckbox.addEventListener('change', function() {
-                    cancelledLabel.innerHTML = this.checked
-                        ? '🔴 Geannuleerd'
-                        : 'Optreden staat gepland';
-                });
 
                 // Update label als published checkbox verandert
                 const publishedCheckbox = document.getElementById('published');

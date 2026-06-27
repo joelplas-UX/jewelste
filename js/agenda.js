@@ -32,9 +32,9 @@ function renderEvents(events, container) {
 
   container.innerHTML = events.map(ev => {
     const dt = formatEventDate(ev.date);
-    const isCancelled = ev.cancelled ?? false;
+    const isCancelled = ev.type === 'geannuleerd';
 
-    // Voor cancelled events: toon "GEANNULEERD" badge
+    // Voor geannuleerde events: toon "GEANNULEERD" badge
     let badge = '';
     if (isCancelled) {
       badge = '<span class="event-badge badge-cancelled">❌ GEANNULEERD</span>';
