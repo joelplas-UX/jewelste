@@ -30,6 +30,7 @@ if (isset($_GET['id'])) {
 
 // Form opslaan
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $type = $_POST['type'] ?? 'openbaar';
     $new_event = [
         'id' => $_POST['id'],
         'title' => $_POST['title'],
@@ -38,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'endTime' => $_POST['endTime'] ?? '',
         'location' => $_POST['location'] ?? '',
         'address' => $_POST['address'] ?? '',
-        'type' => $_POST['type'] ?? 'openbaar',
+        'type' => $type,
+        'class' => $type === 'besloten' ? 'PRIVATE' : 'PUBLIC',
         'published' => isset($_POST['published']) ? (bool)$_POST['published'] : ($event['published'] ?? false)
     ];
 
