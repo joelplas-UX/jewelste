@@ -57,8 +57,12 @@ function renderEvents(events, container) {
       title = '🔒 Besloten feest';
       // Geen location, geen time voor private events
     } else {
-      if (ev.location) {
-        location = `<span>📍 ${ev.location}${ev.address ? `, ${ev.address}` : ''}</span>`;
+      // Show location and/or address
+      const locationParts = [];
+      if (ev.location) locationParts.push(ev.location);
+      if (ev.address) locationParts.push(ev.address);
+      if (locationParts.length) {
+        location = `<span>📍 ${locationParts.join(', ')}</span>`;
       }
       time = ev.startTime
         ? `<span>🕐 ${ev.startTime}${ev.endTime ? ' – ' + ev.endTime : ''}</span>`
