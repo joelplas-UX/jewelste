@@ -1,0 +1,8 @@
+# Zorg dat bezoekers altijd de nieuwste HTML, CSS, JS en data zien
+# (anders gebruikt de browser een gecachte versie tot een paar weken oud).
+# Afbeeldingen en PDF's mogen wel gecachet blijven.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
