@@ -1,4 +1,4 @@
-name: Eenmalig: agenda-data naar nieuwe map
+name: "Eenmalig: agenda-data naar nieuwe map"
 
 on:
   workflow_dispatch:
