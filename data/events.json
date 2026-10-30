@@ -1,0 +1,141 @@
+{
+    "events": [
+        {
+            "id": "2026-06-20",
+            "title": "DownUnderBeach",
+            "date": "2026-06-20",
+            "startTime": "21:00",
+            "endTime": "00:00",
+            "location": "Zwarte Pad 1, Den Haag",
+            "address": "",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true
+        },
+        {
+            "id": "2026-06-26",
+            "title": "Lekenfeesten",
+            "date": "2026-06-26",
+            "startTime": "20:30",
+            "endTime": "00:00",
+            "location": "",
+            "address": "Stadhuisplein, Leiden",
+            "type": "geannuleerd",
+            "class": "PUBLIC",
+            "published": true,
+            "uid": "iSxQ126qrU6y9wvWOabC@band-agenda"
+        },
+        {
+            "id": "2026-06-27",
+            "title": "Restaurant Allemansgeest",
+            "date": "2026-06-27",
+            "startTime": "22:00",
+            "endTime": "",
+            "location": "Hofweg 55, 2251 LP, Voorschoten",
+            "address": "",
+            "type": "besloten",
+            "class": "PRIVATE",
+            "published": true,
+            "uid": "BUqlua6GrEGyUyOi9H7A@band-agenda"
+        },
+        {
+            "id": "2026-08-29",
+            "title": "De Theaterbakkerij",
+            "date": "2026-08-29",
+            "startTime": "",
+            "endTime": "",
+            "location": "Gouderaksedijk 24B, Gouda",
+            "address": "",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true,
+            "uid": "1rA1Y6ZoQOPiGxKDU3G2@band-agenda"
+        },
+        {
+            "id": "2026-09-05",
+            "title": "Dorpsfeest Oegstgeest",
+            "date": "2026-09-05",
+            "startTime": "20:00",
+            "endTime": "",
+            "location": "parkeerterrein Lijtweg, Oegstgeest",
+            "address": "",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true,
+            "uid": "Pp9WprMYmLFYlVFphb1y@band-agenda"
+        },
+        {
+            "id": "2026-09-17",
+            "title": "Café Hogenboom",
+            "date": "2026-09-17",
+            "startTime": "21:00",
+            "endTime": "00:30",
+            "location": "Sotaweg 150, Roelofarendsveen",
+            "address": "",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true
+        },
+        {
+            "id": "2026-10-02",
+            "title": "Leidens Ontzet",
+            "date": "2026-10-02",
+            "startTime": "20:30",
+            "endTime": "23:00",
+            "location": "Karnemelksbrug",
+            "address": "Leiden",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true
+        },
+        {
+            "id": "2026-10-10",
+            "title": "Outdoors Holten",
+            "date": "2026-10-10",
+            "startTime": "20:30",
+            "endTime": "00:00",
+            "location": "",
+            "address": "",
+            "type": "besloten",
+            "class": "PRIVATE",
+            "published": true,
+            "uid": "wgFwxVpYO00bv1RCgiP8@band-agenda"
+        },
+        {
+            "id": "2026-10-03",
+            "title": "Leidens Ontzet",
+            "date": "2026-10-03",
+            "startTime": "21:30",
+            "endTime": "00:00",
+            "location": "Nieuwe Rijn",
+            "address": "Leiden",
+            "type": "openbaar",
+            "class": "PUBLIC",
+            "published": true
+        },
+        {
+            "id": "2027-06-10",
+            "title": "LUMC Zomerfeest",
+            "date": "2027-06-10",
+            "startTime": "16:00",
+            "endTime": "20:00",
+            "location": "",
+            "address": "Leiden",
+            "type": "besloten",
+            "class": "PRIVATE",
+            "published": true
+        },
+        {
+            "id": "2027-06-11",
+            "title": "GGZ Zomerfeest",
+            "date": "2027-06-11",
+            "startTime": "16:00",
+            "endTime": "20:00",
+            "location": "",
+            "address": "Leiden",
+            "type": "besloten",
+            "class": "PRIVATE",
+            "published": true
+        }
+    ]
+}

@@ -23,10 +23,3 @@ jobs:
           server-dir: ${{ secrets.FTP_PATH }}
           state-name: .ftp-deploy-sync-state.json
           dangerous-clean-slate: false
-          # Admin-beheerde agenda: staat alleen op de server, niet in git.
-          # Uitsluiten zorgt dat deze niet overschreven of verwijderd wordt.
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            data/events.json
