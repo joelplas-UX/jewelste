@@ -19,5 +19,5 @@ jobs:
           python3 -c "import json; print(len(json.load(open('events.json'))['events']), 'events')"
           BASE="${FTP_PATH%/}"
           curl -fsS --ftp-create-dirs --user "$FTP_USER:$FTP_PASSWORD" \
-            -T events.json "ftp://$FTP_HOST$BASE/agenda-data/events.json"
-          echo "Geupload naar $BASE/agenda-data/events.json"
+            -T events.json "ftp://$FTP_HOST/${BASE#/}/agenda-data/events.json"
+          echo "Geupload naar ${BASE#/}/agenda-data/events.json"
