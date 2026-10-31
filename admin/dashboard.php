@@ -8,7 +8,7 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
 }
 
 $user_email = $_SESSION['user_email'];
-$events_file = '../data/events.json';
+$events_file = '../agenda-data/events.json';
 
 // Events laden
 $events = [];

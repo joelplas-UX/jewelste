@@ -16,7 +16,7 @@ collections:
     files:
       - name: "events"
         label: "Optredens"
-        file: "data/events.json"
+        file: "agenda-data/events.json"
         fields:
           - label: "Optredens"
             name: "events"

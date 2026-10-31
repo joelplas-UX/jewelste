@@ -1,6 +1,6 @@
 // ============================================================
 // jeWelste — Agenda loader
-// Reads /data/events.json and renders event list
+// Reads /agenda-data/events.json and renders event list
 // ============================================================
 
 const MONTHS_NL = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
@@ -98,7 +98,7 @@ async function initAgenda() {
   let allEvents = [];
 
   try {
-    const res = await fetch('/data/events.json');
+    const res = await fetch('/agenda-data/events.json');
     const data = await res.json();
     // Ondersteunt zowel {events:[...]} (Decap CMS) als directe array (legacy)
     allEvents = Array.isArray(data) ? data : (data.events || []);
